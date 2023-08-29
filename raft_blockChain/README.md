@@ -1,99 +1,53 @@
-另外一篇关于paxos协议的分享地址：https://github.com/vision9527/paxos
+## 使用介绍
 
-### 一、Raft协议简介
+### 一、服务端(Raft节点)
 
-* Raft 是一种为了管理复制日志的一致性协议
+#### 1. 主程序
 
-* 复制状态机概念，复制状态机是指每个状态机或系统如果初始状态一致，然后接受的改变状态的命令也一致，最后产生的结果状态也是相同。
+`Raft`节点的主程序是`raft.go`源文件中的`main`函数，编译后可以得到`Raft`节点的服务端程序`raft.exe`。
 
-* 中英文论文地址：https://github.com/maemual/raft-zh_cn
+启动一个`raft`节点的服务端程序需要以下五种命令行参数：
 
-* go夜读分享bilibili地址：https://www.bilibili.com/video/BV1tV411m7ir
-* go夜读分享youtube地址：https://www.youtube.com/watch?v=EjGNtHrq4UQ
+- `http_addr`：`raft`节点与客户端程序进行通信的`http`接口地址
+- `raft_addr`：`raft`节点用来与其他`raft`节点进行共识通信时使用的接口地址
+- `raft_id`：`raft`节点的`id`身份标识符
+- `raft_cluster`：需要为当前`raft`节点指明`raft`集群中其他节点的`raft_id`和`raft_addr`，当前`raft`节点基于此与其他节点完成连接。
+- `http_raft_addr_map`：需要为当前`raft`节点指明`raft`集群中其他节点的`http_addr`。由于`raft`协议中只有`term`中的主节点`master`才能进行写操作，因此当前节点收到来自客户端的写操作请求时，需要将其转发给`master`。
 
+假设现在我们初始化有三个`raft`节点，三个节点分别成为`node1`,`node2`,`node3`, `bat`启动脚本如下：
 
-### 二、Raft选举过程
+```bash
+@echo off
+start  "node1"  .\raft --http_addr=127.0.0.1:7001 --raft_addr=127.0.0.1:7000 --raft_id=1 --raft_cluster=1/127.0.0.1:7000,2/127.0.0.1:8000,3/127.0.0.1:9000 --http_raft_addr_map=127.0.0.1:7001/127.0.0.1:7000,127.0.0.1:8001/127.0.0.1:8000,127.0.0.1:9001/127.0.0.1:9000
 
-* 选举过程图1（单个节点视角）
+start  "node2"  .\raft --http_addr=127.0.0.1:8001 --raft_addr=127.0.0.1:8000 --raft_id=2 --raft_cluster=1/127.0.0.1:7000,2/127.0.0.1:8000,3/127.0.0.1:9000 --http_raft_addr_map=127.0.0.1:7001/127.0.0.1:7000,127.0.0.1:8001/127.0.0.1:8000,127.0.0.1:9001/127.0.0.1:9000
 
-![选举流程](./image/election.png)
+start  "node3"  .\raft --http_addr=127.0.0.1:9001 --raft_addr=127.0.0.1:9000 --raft_id=3 --raft_cluster=1/127.0.0.1:7000,2/127.0.0.1:8000,3/127.0.0.1:9000 --http_raft_addr_map=127.0.0.1:7001/127.0.0.1:7000,127.0.0.1:8001/127.0.0.1:8000,127.0.0.1:9001/127.0.0.1:9000
 
-* 选举过程图2（整体视角）
+```
 
-![选举流程2](./image/election_timeout.jpeg)
+#### 2. 合约模块
 
-### 三、Raft日志复制流程
+合约模块需要用户自定义设计，`raft`节点在收到来自客户端的请求后，将其包装为交易提交给合约模块。合约模块将完成对交易的执行。
 
-* 日志格式：term + index + cmd + type
+合约模块代码位于`/contract`目录下，当前仅提供了能够实现简单读写操作的`Common`合约，包括`Common:Write`和`Common:Read`两种合约函数。
 
-![日志流程](./image/log_replicate.jpg)
+用户需要在`/contract/contract.go`中添加自定义的合约类，然后再为该合约类创建属于自己的处理函数和源文件。
 
-* 请求处理整体流程
+#### 3. `Web`接口模块
 
-![日志流程](./image/machine_state.png)
+每一个`raft`节点都有`Web`后端模块，用来接收客户端的`http`请求，并在处理之后进行共识。
 
-* 请求处理详细流程（重点）
+`Web`接口模块代码位于`/api/httpApi.go`文件中。如果要绑定新的`Web`接口，请自行设计。
 
-![日志流程](./image/request_process.png)
+> 需要注意：
+>
+> 为了提高读交易的处理速率，可以选择在节点本地执行读取操作(而非交给master节点处理)。
+>
+> 因此对于设计读操作的交易，请在接口函数`CreateNewTransaction`中额外添加处理逻辑，直接从本地读取结果并返回给客户端即可
 
-注：这里7. commit log 应该是在5. commit之后，但是因为commit策略的原因有一定延迟，所以从日志上看是在回复客户端以后
+### 二、测试客户端
 
-### 四、Raft协议动画演示
+客户端主要用于测试`raft`节点的合约功能是否完善，以及最大`TPS`。
 
-* Raft系统运行可视化1 [http://thesecretlivesofdata.com/raft](http://thesecretlivesofdata.com/raft/)
-
-* Raft系统运行可视化2 [https://raft.github.io/#implementations](https://raft.github.io/#implementations)
-
-### 五、hashicorp/raft源码讲解
-
-* hashicorp/raft库 [https://github.com/hashicorp/raft](https://github.com/hashicorp/raft)
-
-* raft启动流程
-
-* raft监听事件
-
-### 六、运行hashicorp/raft库搭建的简单kv服务
-
-* 编译：go build -mod vendor
-
-* 启动node1: ./raft-demo --http_addr=127.0.0.1:7001 --raft_addr=127.0.0.1:7000 --raft_id=1 --raft_cluster=1/127.0.0.1:7000,2/127.0.0.1:8000,3/127.0.0.1:9000
-
-* 启动node2: ./raft-demo --http_addr=127.0.0.1:8001 --raft_addr=127.0.0.1:8000 --raft_id=2 --raft_cluster=1/127.0.0.1:7000,2/127.0.0.1:8000,3/127.0.0.1:9000
-
-* 启动node3: ./raft-demo --http_addr=127.0.0.1:9001 --raft_addr=127.0.0.1:9000 --raft_id=3 --raft_cluster=1/127.0.0.1:7000,2/127.0.0.1:8000,3/127.0.0.1:9000
-
-* set请求：curl http://127.0.0.1:7001/set?key=test_key&value=test_value
-
-* get请求：curl http://127.0.0.1:7001/get?key=test_key
-
-### 七、调试场景
-
-##### 选举变化相关
-
-1. 集群启动后，follower等待一个随机election timeout时间变成candidate，然后发起投票，如果不能获得majority票数，则任期term会一直增加（未pre-vote情况）(branch: election-1)
-
-2. 集群启动后，follower等待一个随机election timeout时间变成candidate，然后发起投票，获得majority票数的节点变成leader (branch: election-2)
-
-3. leader选举成功后发送heartbeat保持leader的地位(branch: election-3)
-
-4. leader失去majority节点的heartbeat响应，退回到follower(branch: election-4)
-
-##### 日志复制相关
-
-1. leader接收客户端请求，向集群内所有节点发送复制RPC，所有都正常响应 -> 正常commit，然后apply到状态机，最后返回客户端处理成功(branch: replicate-log-1)
-
-2. leader接收客户端请求，向集群内所有节点发送复制RPC，majority正常响应 -> 正常commit，然后apply到状态机，最后返回客户端处理成功(branch: replicate-log-2)
-
-3. leader接收客户端请求，向集群内所有节点发送复制RPC，少于majority正常响应 -> 不能commit(branch: replicate-log-3)
-
-### 八、收获
-
-* hashicorp/raft源码
-
-* raft选举与日志复制
-
-### 九、QA
-
-纠正：3个节点宕机2个，剩下一个不可用，怎么处理请求的强一致？
-
-答：这个时候服务应该是不可用的，当然如果要强行提供查询的服务，强一致肯定是无法保证的。
+客户端测试程序位于`/client/client_test.go`中。用户可以根据自己的需要，设计相关的验证函数去验证自定义合约的功能以及`TPS`。
