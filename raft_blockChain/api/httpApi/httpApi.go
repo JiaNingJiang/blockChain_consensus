@@ -7,11 +7,11 @@ import (
 	"sync"
 	"time"
 
-	"raftClient/api/httpApi/app"
-	errorMsg "raftClient/api/httpApi/error"
-	"raftClient/contract"
-	"raftClient/fsm"
-	loglogrus "raftClient/log_logrus"
+	"blockChain_consensus/raftChain/api/httpApi/app"
+	errorMsg "blockChain_consensus/raftChain/api/httpApi/error"
+	"blockChain_consensus/raftChain/contract"
+	"blockChain_consensus/raftChain/fsm"
+	loglogrus "blockChain_consensus/raftChain/log_logrus"
 
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"

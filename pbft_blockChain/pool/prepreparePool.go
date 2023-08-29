@@ -1,8 +1,8 @@
 package pool
 
 import (
-	"pbft_blockchain/common"
-	"pbft_blockchain/pbft/consensus"
+	"blockChain_consensus/pbftChain/common"
+	"blockChain_consensus/pbftChain/pbft/consensus"
 	"sync"
 )
 

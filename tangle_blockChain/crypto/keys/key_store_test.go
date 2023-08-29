@@ -1,12 +1,12 @@
 package keys
 
 import (
+	"blockChain_consensus/tangleChain/common"
+	"blockChain_consensus/tangleChain/crypto"
+	"blockChain_consensus/tangleChain/crypto/randentropy"
 	"encoding/hex"
 	"fmt"
 	"reflect"
-	"tangle/common"
-	"tangle/crypto"
-	"tangle/crypto/randentropy"
 	"testing"
 )
 

@@ -1,7 +1,7 @@
 package app
 
 import (
-	errorMsg "raftClient/api/httpApi/error"
+	errorMsg "blockChain_consensus/raftChain/api/httpApi/error"
 
 	"github.com/gin-gonic/gin"
 )

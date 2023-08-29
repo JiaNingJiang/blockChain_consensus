@@ -5,9 +5,9 @@ import (
 	"io"
 	"strings"
 
-	contract "raftClient/contract"
-	"raftClient/database"
-	loglogrus "raftClient/log_logrus"
+	contract "blockChain_consensus/raftChain/contract"
+	"blockChain_consensus/raftChain/database"
+	loglogrus "blockChain_consensus/raftChain/log_logrus"
 
 	"github.com/hashicorp/raft"
 )

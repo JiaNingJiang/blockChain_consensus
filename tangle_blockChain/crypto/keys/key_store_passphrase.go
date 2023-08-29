@@ -1,6 +1,10 @@
 package keys
 
 import (
+	"blockChain_consensus/tangleChain/common"
+	"blockChain_consensus/tangleChain/crypto"
+	"blockChain_consensus/tangleChain/crypto/randentropy"
+	loglogrus "blockChain_consensus/tangleChain/log_logrus"
 	"bytes"
 	"crypto/aes"
 	"crypto/sha256"
@@ -10,10 +14,6 @@ import (
 	"fmt"
 	"io"
 	"reflect"
-	"tangle/common"
-	"tangle/crypto"
-	"tangle/crypto/randentropy"
-	loglogrus "tangle/log_logrus"
 
 	"github.com/pborman/uuid"
 	"golang.org/x/crypto/pbkdf2"

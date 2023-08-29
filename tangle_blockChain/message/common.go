@@ -1,12 +1,12 @@
 package message
 
 import (
+	"blockChain_consensus/tangleChain/common"
+	"blockChain_consensus/tangleChain/crypto"
+	loglogrus "blockChain_consensus/tangleChain/log_logrus"
+	"blockChain_consensus/tangleChain/rlp"
 	"bytes"
 	"crypto/ecdsa"
-	"tangle/common"
-	"tangle/crypto"
-	loglogrus "tangle/log_logrus"
-	"tangle/rlp"
 	"time"
 )
 

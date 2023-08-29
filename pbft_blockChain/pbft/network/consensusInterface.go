@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	loglogrus "pbft_blockchain/log_logrus"
-	"pbft_blockchain/pbft/consensus"
+	loglogrus "blockChain_consensus/pbftChain/log_logrus"
+	"blockChain_consensus/pbftChain/pbft/consensus"
 
 	"github.com/gin-gonic/gin"
 )

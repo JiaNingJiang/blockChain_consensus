@@ -1,7 +1,7 @@
 package network
 
 import (
-	"pbft_blockchain/client"
+	"blockChain_consensus/pbftChain/client"
 	"testing"
 	"time"
 )

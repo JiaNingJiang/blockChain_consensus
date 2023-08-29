@@ -1,8 +1,8 @@
 package crypto
 
 import (
+	"blockChain_consensus/tangleChain/common"
 	"bytes"
-	"tangle/common"
 	"testing"
 )
 

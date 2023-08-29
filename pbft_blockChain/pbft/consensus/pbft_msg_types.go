@@ -1,12 +1,12 @@
 package consensus
 
 import (
+	"blockChain_consensus/pbftChain/block"
+	"blockChain_consensus/pbftChain/common"
+	"blockChain_consensus/pbftChain/crypto"
+	loglogrus "blockChain_consensus/pbftChain/log_logrus"
 	"crypto/ecdsa"
 	"encoding/json"
-	"pbft_blockchain/block"
-	"pbft_blockchain/common"
-	"pbft_blockchain/crypto"
-	loglogrus "pbft_blockchain/log_logrus"
 )
 
 type RequestMsg struct {

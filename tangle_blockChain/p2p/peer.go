@@ -1,17 +1,17 @@
 package p2p
 
 import (
+	"blockChain_consensus/tangleChain/common"
+	"blockChain_consensus/tangleChain/crypto"
+	loglogrus "blockChain_consensus/tangleChain/log_logrus"
+	"blockChain_consensus/tangleChain/message"
+	"blockChain_consensus/tangleChain/rlp"
 	"crypto/ecdsa"
 	"fmt"
 	"net"
 	"os"
 	"reflect"
 	"sync"
-	"tangle/common"
-	"tangle/crypto"
-	loglogrus "tangle/log_logrus"
-	"tangle/message"
-	"tangle/rlp"
 	"time"
 )
 

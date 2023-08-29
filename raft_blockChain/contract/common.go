@@ -2,8 +2,8 @@ package contract
 
 import (
 	"errors"
-	"raftClient/database"
-	loglogrus "raftClient/log_logrus"
+	"blockChain_consensus/raftChain/database"
+	loglogrus "blockChain_consensus/raftChain/log_logrus"
 )
 
 func CommonContract(worldState *database.Database, function string, args []string) (string, error) {

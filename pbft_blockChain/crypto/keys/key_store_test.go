@@ -1,11 +1,11 @@
 package keys
 
 import (
+	"blockChain_consensus/pbftChain/common"
+	"blockChain_consensus/pbftChain/crypto"
+	"blockChain_consensus/pbftChain/crypto/randentropy"
 	"encoding/hex"
 	"fmt"
-	"pbft_blockchain/common"
-	"pbft_blockchain/crypto"
-	"pbft_blockchain/crypto/randentropy"
 	"reflect"
 	"testing"
 )

@@ -1,8 +1,8 @@
 package main
 
 import (
+	"blockChain_consensus/raftChain/client"
 	"fmt"
-	"raftClient/client"
 	"time"
 )
 

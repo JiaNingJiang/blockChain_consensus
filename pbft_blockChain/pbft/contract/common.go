@@ -1,9 +1,9 @@
 package contract
 
 import (
+	"blockChain_consensus/pbftChain/database"
+	loglogrus "blockChain_consensus/pbftChain/log_logrus"
 	"errors"
-	"pbft_blockchain/database"
-	loglogrus "pbft_blockchain/log_logrus"
 )
 
 func CommonContract(worldState database.Database, function string, args [][]byte) (string, error) {

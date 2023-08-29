@@ -12,13 +12,13 @@ import (
 	"sync"
 	"time"
 
-	"pbft_blockchain/block"
-	"pbft_blockchain/common"
-	"pbft_blockchain/crypto"
-	loglogrus "pbft_blockchain/log_logrus"
-	"pbft_blockchain/pbft/consensus"
-	"pbft_blockchain/pool"
-	"pbft_blockchain/utils"
+	"blockChain_consensus/pbftChain/block"
+	"blockChain_consensus/pbftChain/common"
+	"blockChain_consensus/pbftChain/crypto"
+	loglogrus "blockChain_consensus/pbftChain/log_logrus"
+	"blockChain_consensus/pbftChain/pbft/consensus"
+	"blockChain_consensus/pbftChain/pool"
+	"blockChain_consensus/pbftChain/utils"
 )
 
 const (

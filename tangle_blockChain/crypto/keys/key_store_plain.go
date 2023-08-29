@@ -1,6 +1,8 @@
 package keys
 
 import (
+	"blockChain_consensus/tangleChain/common"
+	loglogrus "blockChain_consensus/tangleChain/log_logrus"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -8,8 +10,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"tangle/common"
-	loglogrus "tangle/log_logrus"
 	"time"
 )
 

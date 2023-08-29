@@ -1,6 +1,8 @@
 package keys
 
 import (
+	"blockChain_consensus/tangleChain/common"
+	"blockChain_consensus/tangleChain/crypto"
 	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
@@ -11,8 +13,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"tangle/common"
-	"tangle/crypto"
 
 	"github.com/pborman/uuid"
 	"golang.org/x/crypto/pbkdf2"

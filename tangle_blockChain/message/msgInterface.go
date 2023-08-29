@@ -1,8 +1,8 @@
 package message
 
 import (
+	"blockChain_consensus/tangleChain/common"
 	"crypto/ecdsa"
-	"tangle/common"
 )
 
 const (

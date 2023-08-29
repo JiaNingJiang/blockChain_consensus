@@ -1,8 +1,8 @@
 package p2p
 
 import (
+	"blockChain_consensus/tangleChain/message"
 	"fmt"
-	"tangle/message"
 	"testing"
 	"time"
 )

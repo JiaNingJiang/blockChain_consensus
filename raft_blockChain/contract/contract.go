@@ -1,8 +1,8 @@
 package contract
 
 import (
+	"blockChain_consensus/raftChain/database"
 	"errors"
-	"raftClient/database"
 )
 
 func ContractFuncRun(worldState *database.Database, contract string, function string, args []string) (string, error) {

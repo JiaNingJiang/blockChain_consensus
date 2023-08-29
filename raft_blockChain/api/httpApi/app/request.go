@@ -1,7 +1,7 @@
 package app
 
 import (
-	loglogrus "raftClient/log_logrus"
+	loglogrus "blockChain_consensus/raftChain/log_logrus"
 
 	"github.com/astaxie/beego/validation"
 )

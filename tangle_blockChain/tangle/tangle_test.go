@@ -1,8 +1,8 @@
 package tangle
 
 import (
+	"blockChain_consensus/tangleChain/p2p"
 	"fmt"
-	"tangle/p2p"
 	"testing"
 	"time"
 )

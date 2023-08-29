@@ -1,6 +1,10 @@
 package keys
 
 import (
+	"blockChain_consensus/pbftChain/common"
+	"blockChain_consensus/pbftChain/crypto"
+	"blockChain_consensus/pbftChain/crypto/randentropy"
+	loglogrus "blockChain_consensus/pbftChain/log_logrus"
 	"bytes"
 	"crypto/aes"
 	"crypto/sha256"
@@ -9,10 +13,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"pbft_blockchain/common"
-	"pbft_blockchain/crypto"
-	"pbft_blockchain/crypto/randentropy"
-	loglogrus "pbft_blockchain/log_logrus"
 	"reflect"
 
 	"github.com/pborman/uuid"

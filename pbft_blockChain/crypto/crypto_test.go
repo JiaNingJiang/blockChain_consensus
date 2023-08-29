@@ -1,8 +1,8 @@
 package crypto
 
 import (
+	"blockChain_consensus/pbftChain/common"
 	"bytes"
-	"pbft_blockchain/common"
 	"testing"
 )
 

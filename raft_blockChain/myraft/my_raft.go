@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"raftClient/fsm"
-	loglogrus "raftClient/log_logrus"
+	"blockChain_consensus/raftChain/fsm"
+	loglogrus "blockChain_consensus/raftChain/log_logrus"
 
 	"github.com/hashicorp/raft"
 	raftboltdb "github.com/hashicorp/raft-boltdb"

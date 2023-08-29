@@ -1,8 +1,8 @@
 package contract
 
 import (
+	"blockChain_consensus/pbftChain/database"
 	"errors"
-	"pbft_blockchain/database"
 )
 
 func ContractFuncRun(worldState database.Database, contract string, function string, args [][]byte) (string, error) {

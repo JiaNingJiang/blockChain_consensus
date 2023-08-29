@@ -8,9 +8,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	api "raftClient/api/httpApi"
-	loglogrus "raftClient/log_logrus"
-	"raftClient/myraft"
+	api "blockChain_consensus/raftChain/api/httpApi"
+	loglogrus "blockChain_consensus/raftChain/log_logrus"
+	"blockChain_consensus/raftChain/myraft"
 )
 
 var (

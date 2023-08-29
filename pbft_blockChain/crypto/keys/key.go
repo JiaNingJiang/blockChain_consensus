@@ -1,6 +1,8 @@
 package keys
 
 import (
+	"blockChain_consensus/pbftChain/common"
+	"blockChain_consensus/pbftChain/crypto"
 	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
@@ -11,8 +13,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"pbft_blockchain/common"
-	"pbft_blockchain/crypto"
 
 	"github.com/pborman/uuid"
 	"golang.org/x/crypto/pbkdf2"

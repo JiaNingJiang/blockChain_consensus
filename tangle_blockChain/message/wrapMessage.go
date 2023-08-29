@@ -1,8 +1,8 @@
 package message
 
 import (
-	loglogrus "tangle/log_logrus"
-	"tangle/rlp"
+	loglogrus "blockChain_consensus/tangleChain/log_logrus"
+	"blockChain_consensus/tangleChain/rlp"
 )
 
 type WrapMessage struct {

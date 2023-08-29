@@ -1,10 +1,10 @@
 package tangle
 
 import (
+	"blockChain_consensus/tangleChain/common"
+	"blockChain_consensus/tangleChain/crypto"
 	"fmt"
 	"reflect"
-	"tangle/common"
-	"tangle/crypto"
 	"testing"
 )
 

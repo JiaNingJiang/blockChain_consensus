@@ -1,6 +1,10 @@
 package crypto
 
 import (
+	"blockChain_consensus/tangleChain/common"
+	"blockChain_consensus/tangleChain/crypto/ecies"
+	"blockChain_consensus/tangleChain/crypto/secp256k1"
+	"blockChain_consensus/tangleChain/crypto/sha3"
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
@@ -11,10 +15,6 @@ import (
 	"io/ioutil"
 	"math/big"
 	"os"
-	"tangle/common"
-	"tangle/crypto/ecies"
-	"tangle/crypto/secp256k1"
-	"tangle/crypto/sha3"
 )
 
 func Sha3(data ...[]byte) []byte {
