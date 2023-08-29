@@ -1,0 +1,59 @@
+package block
+
+import (
+	"crypto/ecdsa"
+	"pbft_blockchain/common"
+	"pbft_blockchain/crypto"
+	loglogrus "pbft_blockchain/log_logrus"
+	"pbft_blockchain/rlp"
+)
+
+type Transaction struct {
+	TxID      common.Hash
+	Client    string        // 请求客户端的标识符
+	TimeStamp uint64        // 客户端请求的时间戳
+	Sender    common.NodeID // 交易发送者的NodeID
+	Signature []byte        // 交易生成者的签名
+
+	Contract string
+	Function string
+	Args     [][]byte // function argument
+
+}
+
+func NewTransaction(client string, sender common.NodeID, nonce uint64, version common.Hash, contract, function string, args [][]byte) *Transaction {
+	return &Transaction{
+		Client:   client,
+		Sender:   sender,
+		Contract: contract,
+		Function: function,
+		Args:     args,
+	}
+}
+
+func (tx *Transaction) Hash() common.Hash {
+	plainTx := *tx
+	plainTx.TxID = common.Hash{}
+	plainTx.Signature = []byte{} // 不同的人对同一笔交易会有不同的数字签名,因此数字签名不能包含在交易哈希的计算中
+	summary, err := rlp.EncodeToBytes(&plainTx)
+	if err != nil {
+		loglogrus.Log.Warnf("[Transaction] Fail in transaction hash!")
+	}
+
+	txHash := crypto.Sha3Hash(summary)
+
+	tx.TxID = txHash
+
+	return txHash
+}
+
+// 计算数字签名
+func (tx *Transaction) DigitalSignature(msgHash common.Hash, prv *ecdsa.PrivateKey) []byte {
+	if signature, err := crypto.Sign(msgHash.Bytes(), prv); err != nil {
+		loglogrus.Log.Warnf("[Transaction] 对Common Msg进行数字签名失败,err=%v\n", err)
+		return nil
+	} else {
+		tx.Signature = signature
+		return signature
+	}
+}
