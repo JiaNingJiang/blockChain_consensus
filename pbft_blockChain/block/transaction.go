@@ -9,11 +9,12 @@ import (
 )
 
 type Transaction struct {
-	TxID      common.Hash
-	Client    string        // 请求客户端的标识符
-	TimeStamp uint64        // 客户端请求的时间戳
-	Sender    common.NodeID // 交易发送者的NodeID
-	Signature []byte        // 交易生成者的签名
+	TxID       common.Hash
+	ClientID   string // 请求客户端的标识符
+	ClientAddr string
+	TimeStamp  uint64        // 客户端请求的时间戳
+	Sender     common.NodeID // 交易发送者的NodeID
+	Signature  []byte        // 交易生成者的签名
 
 	Contract string
 	Function string
@@ -21,13 +22,14 @@ type Transaction struct {
 
 }
 
-func NewTransaction(client string, sender common.NodeID, nonce uint64, version common.Hash, contract, function string, args [][]byte) *Transaction {
+func NewTransaction(clientID string, clientAddr string, sender common.NodeID, nonce uint64, version common.Hash, contract, function string, args [][]byte) *Transaction {
 	return &Transaction{
-		Client:   client,
-		Sender:   sender,
-		Contract: contract,
-		Function: function,
-		Args:     args,
+		ClientID:   clientID,
+		ClientAddr: clientAddr,
+		Sender:     sender,
+		Contract:   contract,
+		Function:   function,
+		Args:       args,
 	}
 }
 

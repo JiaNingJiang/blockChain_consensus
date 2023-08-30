@@ -11,16 +11,36 @@ import (
 )
 
 type Client struct {
-	NodeID string // 客户节点的名称标识符
-
+	NodeID     string // 客户节点的名称标识符
+	NodeUrl    string // 客户端节点的url(用来接收PBFT主节点的reply Msg)
 	PrimaryURL string // PBFT主节点的url
 }
 
-func NewClient(nodeID string, primaryURL string) *Client {
-	return &Client{
+func NewClient(nodeID string, nodeUrl string, primaryURL string) *Client {
+
+	c := &Client{
 		NodeID:     nodeID,
+		NodeUrl:    nodeUrl,
 		PrimaryURL: primaryURL,
 	}
+
+	http.HandleFunc("/result", func(w http.ResponseWriter, r *http.Request) {
+		var result consensus.ExcuteResult
+		err := json.NewDecoder(r.Body).Decode(&result)
+		if err != nil {
+			loglogrus.Log.Errorf("[Client] ExcuteResult Msg json解码失败,err:%v", err)
+			return
+		} else {
+			resultStr, _ := json.MarshalIndent(result, "", "")
+			loglogrus.Log.Infof("[Client] 执行结果: %s\n", string(resultStr))
+		}
+	})
+
+	// 启动HTTP服务器并监听端口
+	go http.ListenAndServe(nodeUrl, nil)
+
+	return c
+
 }
 
 func (c *Client) CommonWrite(args [][]byte) {
@@ -29,6 +49,7 @@ func (c *Client) CommonWrite(args [][]byte) {
 	request := consensus.RequestMsg{
 		Timestamp: uint64(timer.UnixNano()),
 		ClientID:  c.NodeID,
+		ClientUrl: c.NodeUrl,
 		Operation: "Common::Write",
 		Args:      args,
 	}
@@ -48,6 +69,7 @@ func (c *Client) CommonRead(args [][]byte) {
 	request := consensus.RequestMsg{
 		Timestamp: uint64(timer.UnixNano()),
 		ClientID:  c.NodeID,
+		ClientUrl: c.NodeUrl,
 		Operation: "Common::Read",
 		Args:      args,
 	}

@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	MinAccumulatedTx = 20 // 启动一轮共识最少需要的交易数
+	MinAccumulatedTx = 2 // 启动一轮共识最少需要的交易数
 )
 
 var (
@@ -87,24 +87,19 @@ const f = 1                                           // pbft共识所需的参�
 //	2.1 go node.dispatchMsg() 接收协程
 //	2.2 go node.alarmToDispatcher() 定时器触发共识开启协程,另一种方式触发node.dispatchMsg()
 //	2.3 go node.resolveMsg() 消息处理协程
-func NewNode(nodeName string) *Node {
+func NewNode(nodeName string, mainNodeName string, pbft_cluser map[string]string) *Node {
 	const viewID = 10000000000 // 临时用视图ID
 
 	node := &Node{
 		// Hard-coded for test.
-		NodeName: nodeName,
-		NodeNameTable: map[string]string{
-			"MainNode":     "127.0.0.1:1111",
-			"ReplicaNode1": "127.0.0.1:1112",
-			"ReplicaNode2": "127.0.0.1:1113",
-			"ReplicaNode3": "127.0.0.1:1114",
-		},
+		NodeName:      nodeName,
+		NodeNameTable: pbft_cluser,
 
 		NodeInfoTable: make(map[common.NodeID]consensus.NodeInfo),
 
 		View: &View{
 			ID:          viewID,
-			PrimaryName: "MainNode",
+			PrimaryName: mainNodeName,
 		},
 
 		// Consensus-related struct
@@ -266,7 +261,7 @@ func (node *Node) GetReq(reqMsg *consensus.RequestMsg) error {
 	// 必须搜集到足够数量的客户端Request 或者达到了时间上限 才行开启一轮共识
 	// 根据客户端的request组装交易
 	op := strings.Split(reqMsg.Operation, "::")
-	newTx := block.NewTransaction(reqMsg.ClientID, node.NodeID, 0, node.CurrentVersion, op[0], op[1], reqMsg.Args)
+	newTx := block.NewTransaction(reqMsg.ClientID, reqMsg.ClientUrl, node.NodeID, 0, node.CurrentVersion, op[0], op[1], reqMsg.Args)
 
 	txHash := newTx.Hash() // 计算交易哈希值
 	newTx.DigitalSignature(txHash, node.prvKey)
@@ -768,10 +763,30 @@ func (node *Node) resolveReplyMsg(msgs []consensus.ReplyMsg) []error {
 	for res, count := range finalResMap {
 		if count >= f+1 {
 			loglogrus.Log.Infof("客户端请求执行成功,执行结果:%v\n", res.Result)
-			// TODO:执行成功.向客户端回复执行结果
+			// 执行成功.向客户端回复执行结果
+			succeedRes := res
+
+			if jsonMsg, err := json.Marshal(succeedRes); err != nil { //对需要进行广播的消息进行json编码
+				loglogrus.Log.Warnf("客户端执行结果json编码失败,err:%v\n", err)
+			} else {
+				send(res.ClientUrl+"/result", []byte(jsonMsg))
+			}
+
 		} else {
 			loglogrus.Log.Infof("客户端请求执行失败\n")
-			// TODO:没有足够数量的合法reply,说明执行失败,向客户端回复失败信息
+			// 没有足够数量的合法reply,说明执行失败,向客户端回复失败信息
+			failedRes := consensus.ExcuteResult{}
+			failedRes.ClientID = res.ClientID
+			failedRes.ClientUrl = res.ClientUrl
+			failedRes.TimeStamp = res.TimeStamp
+			failedRes.Result = ""
+			failedRes.Error = "can't pass pbft consensus!"
+
+			if jsonMsg, err := json.Marshal(failedRes); err != nil { //对需要进行广播的消息进行json编码
+				loglogrus.Log.Warnf("客户端执行结果json编码失败,err:%v\n", err)
+			} else {
+				send(res.ClientUrl+"/result", []byte(jsonMsg))
+			}
 		}
 	}
 

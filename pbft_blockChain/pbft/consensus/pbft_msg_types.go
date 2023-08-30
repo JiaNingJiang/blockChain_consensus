@@ -12,6 +12,7 @@ import (
 type RequestMsg struct {
 	Timestamp  uint64   `json:"timestamp"`
 	ClientID   string   `json:"clientID"`
+	ClientUrl  string   `json:"clientUrl"`
 	Operation  string   `json:"operation"`  // 包含合约名称/合约函数名称
 	Args       [][]byte `json:"args"`       // 合约函数参数
 	SequenceID int64    `json:"sequenceID"` //client产生消息时不需要填，共识过程会为其添加
@@ -32,6 +33,7 @@ type ReplyMsg struct {
 	ViewID    uint64 `json:"viewID"`
 	Timestamp uint64 `json:"timestamp"`
 	ClientID  string `json:"clientID"`
+	ClientUrl string `json:"clientUrl"`
 
 	ResultSet []ExcuteResult `json:"excuteResultSet"`
 	NodeName  string         `json:"nodeName"`
@@ -40,11 +42,16 @@ type ReplyMsg struct {
 }
 
 type ExcuteResult struct {
-	ClientID  string `json:"clientID"`  // 该交易回执需要返回给哪一个client
+	ClientID  string `json:"clientID"` // 该交易回执需要返回给哪一个client
+	ClientUrl string `json:"clientUrl"`
 	TimeStamp uint64 `json:"timeStamp"` // 交易关联的客户端请求的时间戳
-	Result    string `json:"result"`
 
-	Error string `json:"error"`
+	Contract string
+	Function string
+	Args     string // function argument
+
+	Result string `json:"result"`
+	Error  string `json:"error"`
 }
 
 func (replyMsg *ReplyMsg) Hash() common.Hash {

@@ -274,9 +274,17 @@ func (state *State) Commit(commitMsg *VoteMsg, nodeIDMap map[common.NodeID]struc
 		for _, tx := range rblock.Transactions {
 			res, err := contract.ContractFuncRun(state.WorldState, tx.Contract, tx.Function, tx.Args)
 			if err == nil {
-				resultSet = append(resultSet, ExcuteResult{tx.Client, tx.TimeStamp, res, "nil"})
+				argsStr := ""
+				for _, arg := range tx.Args {
+					argsStr += (string(arg) + " ")
+				}
+				resultSet = append(resultSet, ExcuteResult{tx.ClientID, tx.ClientAddr, tx.TimeStamp, tx.Contract, tx.Function, argsStr, res, "nil"})
 			} else {
-				resultSet = append(resultSet, ExcuteResult{tx.Client, tx.TimeStamp, res, fmt.Sprintf("%v", err)})
+				argsStr := ""
+				for _, arg := range tx.Args {
+					argsStr += (string(arg) + " ")
+				}
+				resultSet = append(resultSet, ExcuteResult{tx.ClientID, tx.ClientAddr, tx.TimeStamp, tx.Contract, tx.Function, argsStr, res, fmt.Sprintf("%v", err)})
 			}
 
 		}
