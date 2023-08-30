@@ -55,6 +55,8 @@ type RequestMsg struct {
 	SequenceID int64    `json:"sequenceID"` // client产生消息时不需要填，共识过程会为其添加
 }
 ```
+完成共识的客户端请求的执行回执会从`PBFT`集群的主节点回复给客户端`client`, 因为交易执行可能成功也可能失败, 因此客户端有一个变量`successfulTx`专门用于
+统计至今为止由`PBFT`集群执行成功的交易的数量。用户可以通过`client.BakcSuccessfulTxCount()`方法随时查看成功执行的交易数量，从而测算TPS。
 
 - 测试案例
 
