@@ -19,8 +19,8 @@ import (
 )
 
 const (
-	minWaitingTxCount  = 20
-	maxWaitingDuration = 3 * time.Second
+	minWaitingTxCount = 20
+	// maxWaitingDuration = 3 * time.Second
 )
 
 type RecordInfo struct {
