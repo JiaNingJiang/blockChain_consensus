@@ -89,6 +89,10 @@ func (peer *Peer) BackNodeID() common.NodeID {
 // 与其他节点建立TCP连接
 func (peer *Peer) LookUpOthers(remoteAddrs []*Address) {
 	for _, remote := range remoteAddrs {
+		if reflect.DeepEqual(*remote, peer.LocalAddr) { // 不需要与自己建立连接
+			continue
+		}
+
 		if conn, err := net.Dial("tcp", remote.IP+fmt.Sprintf(":%d", remote.Port)); err != nil {
 			loglogrus.Log.Warnf("[P2P] 当前节点(%s:%d)与目标节点(%s:%d)建立tcp连接失败,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port,
 				remote.IP, remote.Port, err)

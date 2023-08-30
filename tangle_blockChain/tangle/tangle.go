@@ -6,6 +6,7 @@ import (
 	loglogrus "blockChain_consensus/tangleChain/log_logrus"
 	"blockChain_consensus/tangleChain/message"
 	"blockChain_consensus/tangleChain/p2p"
+	"context"
 	"fmt"
 	"sync"
 	"time"
@@ -43,6 +44,8 @@ type Tangel struct {
 
 	txCount      int // 已经上链的交易总数(不包含创世交易,从1开始计数)
 	txCountMutex sync.RWMutex
+
+	stopChannel chan bool
 }
 
 func NewTangle(λ int, h time.Duration, peer *p2p.Peer) *Tangel {
@@ -51,6 +54,7 @@ func NewTangle(λ int, h time.Duration, peer *p2p.Peer) *Tangel {
 		λ:             λ,
 		h:             h,
 		tipExpireTime: TipExpireTime,
+		stopChannel:   make(chan bool),
 	}
 	if memDB1, err := leveldb.Open(storage.NewMemStorage(), nil); err != nil {
 		loglogrus.Log.Errorf("当前节点(%s:%d)无法创建内存数据库,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port, err)
@@ -85,7 +89,12 @@ func NewTangle(λ int, h time.Duration, peer *p2p.Peer) *Tangel {
 	return tangle
 }
 
-func (tg *Tangel) ReadMsgFromP2PPool() {
+func (tg *Tangel) Start(ctx context.Context) {
+	go tg.ReadMsgFromP2PPool(ctx) // 启动tangle节点的接收协程
+	go tg.UpdateTipSet(ctx)       // 更新tangle节点的tip交易
+}
+
+func (tg *Tangel) ReadMsgFromP2PPool(ctx context.Context) {
 	cycle := time.NewTicker(tg.h / 2)
 	for {
 		select {
@@ -105,6 +114,10 @@ func (tg *Tangel) ReadMsgFromP2PPool() {
 				}
 			}
 			go tg.DealRcvTransaction(txSet)
+
+		case <-ctx.Done():
+			cycle.Stop()
+			return
 		default:
 			continue
 		}
@@ -137,12 +150,16 @@ func (tg *Tangel) DealRcvTransaction(txs []*Transaction) {
 }
 
 // 定期使用candidate更新tangle的tip集合(建立在一种特殊的tip策略上：一个新生成的区块只有经历固定的时间长度后才能成为tip)
-func (tg *Tangel) UpdateTipSet() {
+func (tg *Tangel) UpdateTipSet(ctx context.Context) {
 	cycle := time.NewTicker(tg.h / 2)
 	tipExpireCycle := time.NewTicker(tg.tipExpireTime)
 
 	for {
 		select {
+		case <-ctx.Done():
+			cycle.Stop()
+			tipExpireCycle.Stop()
+			return
 		case <-tipExpireCycle.C:
 			now := time.Now()
 			tg.curTipMutex.Lock()
@@ -231,7 +248,7 @@ func (tg *Tangel) BackTxCount() int {
 }
 
 // 发布一笔交易
-func (tg *Tangel) PublishTransaction(data interface{}, txCode int) {
+func (tg *Tangel) PublishTransaction(data interface{}, txCode uint64) {
 	tg.curTipMutex.RLock()
 	tipSet := make([]common.Hash, 0)
 	for tip, _ := range tg.TipSet {

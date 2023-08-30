@@ -21,10 +21,11 @@ const (
 	defaultDiff uint64 = 3 // 默认的Pow难度值
 )
 
+// 表示交易类型,依据此来执行不同的合约函数
 const (
-	CommonWriteCode        = 0x00 // 表示交易类型,依据此来执行不同的合约函数
-	CommonReadCode         = 0x01
-	CommonWriteAndReadCode = 0x02
+	CommonWriteCode        = 0x00 // 执行 Common:Write 合约函数
+	CommonReadCode         = 0x01 // 执行 Common:Read 合约函数
+	CommonWriteAndReadCode = 0x02 // 同时执行 Common:Write 和 Common:Read 合约函数
 
 	// TODO: BGP相关交易类型
 )
@@ -74,7 +75,7 @@ func RandomApproveStrategy(allTx []*RawTransaction) []*RawTransaction {
 
 type RawTransaction struct {
 	TxID        common.Hash
-	TxCode      int
+	TxCode      uint64
 	Data        interface{}   // 交易内容
 	PreviousTxs []common.Hash // 前面的可供Approve的所有交易
 
@@ -119,7 +120,7 @@ func NewGenesisTx(sender common.NodeID) *Transaction {
 	return tx
 }
 
-func NewTransaction(data interface{}, tipTx []common.Hash, sender common.NodeID, txCode int) *Transaction {
+func NewTransaction(data interface{}, tipTx []common.Hash, sender common.NodeID, txCode uint64) *Transaction {
 	rawTx := &RawTransaction{
 		TxCode:      txCode,
 		Data:        data,

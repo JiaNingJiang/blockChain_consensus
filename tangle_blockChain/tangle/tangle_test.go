@@ -2,6 +2,7 @@ package tangle
 
 import (
 	"blockChain_consensus/tangleChain/p2p"
+	"context"
 	"fmt"
 	"testing"
 	"time"
@@ -38,13 +39,15 @@ func TestTangle(t *testing.T) {
 	tangle2 := NewTangle(10, 4*time.Second, peer2)
 	tangle3 := NewTangle(10, 4*time.Second, peer3)
 
-	go tangle1.ReadMsgFromP2PPool()
-	go tangle2.ReadMsgFromP2PPool()
-	go tangle3.ReadMsgFromP2PPool()
+	ctx := context.Background()
 
-	go tangle1.UpdateTipSet()
-	go tangle2.UpdateTipSet()
-	go tangle3.UpdateTipSet()
+	go tangle1.ReadMsgFromP2PPool(ctx)
+	go tangle2.ReadMsgFromP2PPool(ctx)
+	go tangle3.ReadMsgFromP2PPool(ctx)
+
+	go tangle1.UpdateTipSet(ctx)
+	go tangle2.UpdateTipSet(ctx)
+	go tangle3.UpdateTipSet(ctx)
 
 	// 测试一: 仅让tangle1(peer1)发布一笔交易
 	go func() {
