@@ -1,26 +1,8 @@
 @echo off
+go build .\pbftServer.go
 
-if exist .\pbftNode.exe (  
-    del .\pbftNode.exe
-    go build -o pbftNode.exe .\main.go
-) else (
-    go build -o pbftNode.exe .\main.go
-)
+start  "node1"  .\pbftServer --node_name="MainNode" --node_addr="127.0.0.1:9001" --main_node="MainNode" --pbft_cluser="MainNode/127.0.0.1:9001,ReplicaNode1/127.0.0.1:9002,ReplicaNode2/127.0.0.1:9003,ReplicaNode3/127.0.0.1:9004"
+start  "node2"  .\pbftServer --node_name="ReplicaNode1" --node_addr="127.0.0.1:9002" --main_node="MainNode" --pbft_cluser="MainNode/127.0.0.1:9001,ReplicaNode1/127.0.0.1:9002,ReplicaNode2/127.0.0.1:9003,ReplicaNode3/127.0.0.1:9004"
+start  "node3"  .\pbftServer --node_name="ReplicaNode2" --node_addr="127.0.0.1:9003" --main_node="MainNode" --pbft_cluser="MainNode/127.0.0.1:9001,ReplicaNode1/127.0.0.1:9002,ReplicaNode2/127.0.0.1:9003,ReplicaNode3/127.0.0.1:9004"
+start  "node4"  .\pbftServer --node_name="ReplicaNode3" --node_addr="127.0.0.1:9004" --main_node="MainNode" --pbft_cluser="MainNode/127.0.0.1:9001,ReplicaNode1/127.0.0.1:9002,ReplicaNode2/127.0.0.1:9003,ReplicaNode3/127.0.0.1:9004"
 
-
-if exist .\client.exe (  
-    del .\client.exe
-    go build  .\client.go
-) else (
-    go build  .\client.go
-)
-
-
-start  pbftNode.exe -id="MainNode" -log=1
-start  pbftNode.exe -id="ReplicaNode1" -log=2
-start  pbftNode.exe -id="ReplicaNode2" -log=3
-start  pbftNode.exe -id="ReplicaNode3" -log=4
-
-timeout /t 3
-
-start client.exe

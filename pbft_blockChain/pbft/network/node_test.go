@@ -44,7 +44,7 @@ func TestFourNode(t *testing.T) {
 
 	time.Sleep(5 * time.Second) // 等待节点们完成NodeID等信息的交换
 
-	client := client.NewClient("client1", "127.0.0.1:8001", mainNode.Url)
+	client := client.NewClient("client1", "127.0.0.1:8001", "127.0.0.1:9001")
 
 	args := make([][]byte, 2)
 	args[0] = []byte("key")

@@ -21,6 +21,7 @@ func init() {
 }
 
 func main() {
+	flag.Parse()
 
 	nodeNameTable := make(map[string]string)
 
