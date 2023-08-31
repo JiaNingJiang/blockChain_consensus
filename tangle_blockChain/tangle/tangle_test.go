@@ -35,9 +35,11 @@ func p2pNet() {
 func TestTangle(t *testing.T) {
 	p2pNet()
 
-	tangle1 := NewTangle(10, 4*time.Second, peer1)
-	tangle2 := NewTangle(10, 4*time.Second, peer2)
-	tangle3 := NewTangle(10, 4*time.Second, peer3)
+	var defaultDiff uint64 = 3
+
+	tangle1 := NewTangle(10, 4*time.Second, defaultDiff, peer1)
+	tangle2 := NewTangle(10, 4*time.Second, defaultDiff, peer2)
+	tangle3 := NewTangle(10, 4*time.Second, defaultDiff, peer3)
 
 	ctx := context.Background()
 
@@ -52,7 +54,7 @@ func TestTangle(t *testing.T) {
 	// 测试一: 仅让tangle1(peer1)发布一笔交易
 	go func() {
 		for i := 0; i < 9; i++ {
-			tangle1.PublishTransaction(fmt.Sprintf("tx%d", i), CommonWriteAndReadCode)
+			tangle1.PublishTransaction(CommonWriteAndReadCode, []string{fmt.Sprintf("test_key%d", i), fmt.Sprintf("test_value%d", i)})
 		}
 	}()
 
@@ -73,8 +75,8 @@ func TestTangle(t *testing.T) {
 	fmt.Println()
 
 	// 测试二: 让tangle1(peer1),tangle2(peer2)各自发布一笔交易
-	tangle1.PublishTransaction("tx2", CommonWriteAndReadCode)
-	tangle2.PublishTransaction("tx2", CommonWriteAndReadCode)
+	tangle1.PublishTransaction(CommonWriteAndReadCode, []string{"peer1_key", "peer1_value"})
+	tangle2.PublishTransaction(CommonWriteAndReadCode, []string{"peer2_key", "peer2_value"})
 	_ = tangle3
 	time.Sleep(15 * time.Second)
 
@@ -91,8 +93,8 @@ func TestTangle(t *testing.T) {
 	time.Sleep(10 * time.Second)
 
 	// 测试三: 让tangle1(peer1),tangle2(peer2)各自再发布一笔交易
-	tangle1.PublishTransaction("tx3", CommonWriteAndReadCode)
-	tangle2.PublishTransaction("tx3", CommonWriteAndReadCode)
+	tangle1.PublishTransaction(CommonWriteAndReadCode, []string{"peer1_key1", "peer1_value1"})
+	tangle2.PublishTransaction(CommonWriteAndReadCode, []string{"peer2_key1", "peer2_value1"})
 	_ = tangle3
 	time.Sleep(10 * time.Second)
 

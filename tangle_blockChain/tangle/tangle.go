@@ -31,6 +31,8 @@ type Tangel struct {
 	λ  int           // 交易的生成速率(达不到的话就用空交易)
 	h  time.Duration // 交易从生成到确认的时间间隔
 
+	powDiff uint64
+
 	tipExpireTime time.Duration // tip交易任期时长(这个时长会影响DAG分叉程度和TipSet的大小) TODO:需要更加合理的设置这个参数
 
 	GenesisTx   *Transaction
@@ -48,11 +50,12 @@ type Tangel struct {
 	stopChannel chan bool
 }
 
-func NewTangle(λ int, h time.Duration, peer *p2p.Peer) *Tangel {
+func NewTangle(λ int, h time.Duration, powDiff uint64, peer *p2p.Peer) *Tangel {
 	tangle := &Tangel{
 		peer:          peer,
 		λ:             λ,
 		h:             h,
+		powDiff:       powDiff,
 		tipExpireTime: TipExpireTime,
 		stopChannel:   make(chan bool),
 	}
@@ -71,7 +74,7 @@ func NewTangle(λ int, h time.Duration, peer *p2p.Peer) *Tangel {
 	}
 
 	// 将创始交易存入数据库
-	genesis := NewGenesisTx(common.NodeID{})
+	genesis := NewGenesisTx(common.NodeID{}, powDiff)
 	tangle.DatabaseMutex.Lock()
 	key := genesis.RawTx.TxID[:]
 	value := TransactionSerialize(genesis.RawTx)
@@ -214,14 +217,14 @@ func (tg *Tangel) UpdateTipSet(ctx context.Context) {
 
 					switch candidateTx.RawTx.TxCode {
 					case CommonWriteCode:
-						candidateTx.CommonExecuteWrite(tg.WorldState, "test-key", "test-value")
+						candidateTx.CommonExecuteWrite(tg.WorldState, candidateTx.RawTx.Args[0], candidateTx.RawTx.Args[1])
 					case CommonReadCode:
-						res := candidateTx.CommonExecuteRead(tg.WorldState, "test-key")
+						res := candidateTx.CommonExecuteRead(tg.WorldState, candidateTx.RawTx.Args[0])
 						loglogrus.Log.Infof("[Tangle] 当前节点(%s:%d) 的 candidate(%x) 交易执行结果为: %s",
 							tg.peer.LocalAddr.IP, tg.peer.LocalAddr.Port, candidate.TxID, res)
 					case CommonWriteAndReadCode:
-						candidateTx.CommonExecuteWrite(tg.WorldState, "test-key", "test-value")
-						res := candidateTx.CommonExecuteRead(tg.WorldState, "test-key")
+						candidateTx.CommonExecuteWrite(tg.WorldState, candidateTx.RawTx.Args[0], candidateTx.RawTx.Args[1])
+						res := candidateTx.CommonExecuteRead(tg.WorldState, candidateTx.RawTx.Args[0])
 						loglogrus.Log.Infof("[Tangle] 当前节点(%s:%d) 的 candidate(%x) 交易执行结果为: %s",
 							tg.peer.LocalAddr.IP, tg.peer.LocalAddr.Port, candidate.TxID, res)
 					}
@@ -248,7 +251,7 @@ func (tg *Tangel) BackTxCount() int {
 }
 
 // 发布一笔交易
-func (tg *Tangel) PublishTransaction(data interface{}, txCode uint64) {
+func (tg *Tangel) PublishTransaction(txCode uint64, arg []string) {
 	tg.curTipMutex.RLock()
 	tipSet := make([]common.Hash, 0)
 	for tip, _ := range tg.TipSet {
@@ -260,7 +263,7 @@ func (tg *Tangel) PublishTransaction(data interface{}, txCode uint64) {
 	// 	loglogrus.Log.Infof("[Tangle] 当前节点(%s:%d)即将发布的交易的Previous Tx(txCount:%d) (txID:%x)\n", tg.peer.LocalAddr.IP, tg.peer.LocalAddr.Port, len(tg.TipSet), tip)
 	// }
 
-	newTx := NewTransaction(data, tipSet, tg.peer.BackNodeID(), txCode)
+	newTx := NewTransaction(arg, tipSet, tg.peer.BackNodeID(), txCode, tg.powDiff)
 
 	tg.DatabaseMutex.Lock()
 	newTx.SelectApproveTx(tg.Database)

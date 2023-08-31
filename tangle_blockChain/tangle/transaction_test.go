@@ -9,9 +9,12 @@ import (
 )
 
 func TestTxEncodeAndDecode(t *testing.T) {
-	tx := NewGenesisTx(common.NodeID{}) // 生成交易
-	tx.SelectApproveTx(nil)             // 为交易选择支持的前置交易(需要合法)
-	tx.Pow()                            // 对该交易进行Pow验证
+
+	var defaultDiff uint64 = 3
+
+	tx := NewGenesisTx(common.NodeID{}, defaultDiff) // 生成交易
+	tx.SelectApproveTx(nil)                          // 为交易选择支持的前置交易(需要合法)
+	tx.Pow()                                         // 对该交易进行Pow验证
 	// 交易打包成 wrap Message , 从而通过p2p网络进行传播
 	prv, _ := crypto.GenerateKey() // 1.生成私钥
 

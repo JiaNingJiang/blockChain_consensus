@@ -74,9 +74,11 @@ func RandomApproveStrategy(allTx []*RawTransaction) []*RawTransaction {
 }
 
 type RawTransaction struct {
-	TxID        common.Hash
-	TxCode      uint64
-	Data        interface{}   // 交易内容
+	TxID   common.Hash
+	TxCode uint64
+
+	Args []string // 合约函数参数
+
 	PreviousTxs []common.Hash // 前面的可供Approve的所有交易
 
 	GenesisTx        common.Hash   // 创世交易哈希值
@@ -102,13 +104,12 @@ type Transaction struct {
 }
 
 // 创建一个创世交易(默认所有节点都有，而且相同)
-func NewGenesisTx(sender common.NodeID) *Transaction {
+func NewGenesisTx(sender common.NodeID, powDiff uint64) *Transaction {
 	rawTx := &RawTransaction{
-		Data:        "genesis",
 		PreviousTxs: make([]common.Hash, 0),
 		ApproveTx:   make([]common.Hash, 0),
 		Sender:      sender,
-		Diff:        defaultDiff,
+		Diff:        powDiff,
 		IsGenesis:   1,
 		Weight:      1,
 	}
@@ -120,13 +121,14 @@ func NewGenesisTx(sender common.NodeID) *Transaction {
 	return tx
 }
 
-func NewTransaction(data interface{}, tipTx []common.Hash, sender common.NodeID, txCode uint64) *Transaction {
+func NewTransaction(args []string, tipTx []common.Hash, sender common.NodeID, txCode uint64, powDiff uint64) *Transaction {
 	rawTx := &RawTransaction{
-		TxCode:      txCode,
-		Data:        data,
+		TxCode: txCode,
+		Args:   args,
+
 		PreviousTxs: tipTx,
 		Sender:      sender,
-		Diff:        defaultDiff,
+		Diff:        powDiff,
 		IsGenesis:   0,
 		Weight:      1,
 		TimeStamp:   uint64(time.Now().UnixNano()),
