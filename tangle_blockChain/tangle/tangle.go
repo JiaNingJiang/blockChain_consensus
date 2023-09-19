@@ -7,6 +7,7 @@ import (
 	"blockChain_consensus/tangleChain/message"
 	"blockChain_consensus/tangleChain/p2p"
 	"context"
+	"encoding/json"
 	"fmt"
 	"sync"
 	"time"
@@ -60,14 +61,14 @@ func NewTangle(λ int, h time.Duration, powDiff uint64, peer *p2p.Peer) *Tangel 
 		stopChannel:   make(chan bool),
 	}
 	if memDB1, err := leveldb.Open(storage.NewMemStorage(), nil); err != nil {
-		loglogrus.Log.Errorf("当前节点(%s:%d)无法创建内存数据库,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port, err)
+		loglogrus.Log.Errorf("当前节点(%s)无法创建内存数据库,err:%v\n", peer.LocalUrl, err)
 		return nil
 	} else {
 		tangle.Database = database.NewSimpleLDB("Transaction", memDB1)
 	}
 
 	if memDB2, err := leveldb.Open(storage.NewMemStorage(), nil); err != nil {
-		loglogrus.Log.Errorf("当前节点(%s:%d)无法创建内存数据库,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port, err)
+		loglogrus.Log.Errorf("当前节点(%s)无法创建内存数据库,err:%v\n", peer.LocalUrl, err)
 		return nil
 	} else {
 		tangle.WorldState = database.NewSimpleLDB("WorldState", memDB2)
@@ -137,8 +138,8 @@ func (tg *Tangel) DealRcvTransaction(txs []*Transaction) {
 			for index, aTx := range tx.RawTx.ApproveTx {
 				approveTxStr += fmt.Sprintf("支持的第%d笔交易 (txID:%x)    ", index, aTx)
 			}
-			loglogrus.Log.Infof("[Tangle] 当前节点(%s:%d)(NodeID:%x)完成对来自Node(%x)交易(%x)的Pow验证, %s  \n", tg.peer.LocalAddr.IP,
-				tg.peer.LocalAddr.Port, tg.peer.BackNodeID(), tx.RawTx.Sender, tx.RawTx.TxID, approveTxStr)
+			loglogrus.Log.Infof("[Tangle] 当前节点(%s)(NodeID:%x)完成对来自Node(%x)交易(%x)的Pow验证, %s  \n", tg.peer.LocalUrl,
+				tg.peer.BackNodeID(), tx.RawTx.Sender, tx.RawTx.TxID, approveTxStr)
 
 			validTxs = append(validTxs, tx)
 		}
@@ -168,7 +169,7 @@ func (tg *Tangel) UpdateTipSet(ctx context.Context) {
 			tg.curTipMutex.Lock()
 
 			for tip, _ := range tg.TipSet {
-				loglogrus.Log.Infof("[Tangle] 当前节点(%s:%d) 更新前的(tipCount:%d) tip(%x)\n", tg.peer.LocalAddr.IP, tg.peer.LocalAddr.Port, len(tg.TipSet), tip)
+				loglogrus.Log.Infof("[Tangle] 当前节点(%s) 更新前的(tipCount:%d) tip(%x)\n", tg.peer.LocalUrl, len(tg.TipSet), tip)
 			}
 
 			for txID, eleTime := range tg.TipSet {
@@ -179,7 +180,7 @@ func (tg *Tangel) UpdateTipSet(ctx context.Context) {
 			tg.curTipMutex.Unlock()
 
 			for tip, _ := range tg.TipSet {
-				loglogrus.Log.Infof("[Tangle] 当前节点(%s:%d) 更新后的(tipCount:%d) tip(%x)\n", tg.peer.LocalAddr.IP, tg.peer.LocalAddr.Port, len(tg.TipSet), tip)
+				loglogrus.Log.Infof("[Tangle] 当前节点(%s) 更新后的(tipCount:%d) tip(%x)\n", tg.peer.LocalUrl, len(tg.TipSet), tip)
 			}
 
 		case <-cycle.C:
@@ -194,8 +195,8 @@ func (tg *Tangel) UpdateTipSet(ctx context.Context) {
 			for _, candidate := range tg.CandidateTips {
 				if uint64(now)-candidate.TimeStamp > uint64(tg.h.Nanoseconds()) { // 交易可以被确认(也即是可以真正上链)
 
-					loglogrus.Log.Infof("[Tangle] 当前节点(%s:%d) 的 candidate 交易(%x)可以进行上链,变为 Tip 交易, len(PreviousTxs) = %d\n",
-						tg.peer.LocalAddr.IP, tg.peer.LocalAddr.Port, candidate.TxID, len(candidate.PreviousTxs))
+					loglogrus.Log.Infof("[Tangle] 当前节点(%s) 的 candidate 交易(%x)可以进行上链,变为 Tip 交易, len(PreviousTxs) = %d\n",
+						tg.peer.LocalUrl, candidate.TxID, len(candidate.PreviousTxs))
 
 					tg.TipSet[candidate.TxID] = time.Now()
 
@@ -220,13 +221,13 @@ func (tg *Tangel) UpdateTipSet(ctx context.Context) {
 						candidateTx.CommonExecuteWrite(tg.WorldState, candidateTx.RawTx.Args[0], candidateTx.RawTx.Args[1])
 					case CommonReadCode:
 						res := candidateTx.CommonExecuteRead(tg.WorldState, candidateTx.RawTx.Args[0])
-						loglogrus.Log.Infof("[Tangle] 当前节点(%s:%d) 的 candidate(%x) 交易执行结果为: %s",
-							tg.peer.LocalAddr.IP, tg.peer.LocalAddr.Port, candidate.TxID, res)
+						loglogrus.Log.Infof("[Tangle] 当前节点(%s) 的 candidate(%x) 交易执行结果为: %s",
+							tg.peer.LocalUrl, candidate.TxID, res)
 					case CommonWriteAndReadCode:
 						candidateTx.CommonExecuteWrite(tg.WorldState, candidateTx.RawTx.Args[0], candidateTx.RawTx.Args[1])
 						res := candidateTx.CommonExecuteRead(tg.WorldState, candidateTx.RawTx.Args[0])
-						loglogrus.Log.Infof("[Tangle] 当前节点(%s:%d) 的 candidate(%x) 交易执行结果为: %s",
-							tg.peer.LocalAddr.IP, tg.peer.LocalAddr.Port, candidate.TxID, res)
+						loglogrus.Log.Infof("[Tangle] 当前节点(%s) 的 candidate(%x) 交易执行结果为: %s",
+							tg.peer.LocalUrl, candidate.TxID, res)
 					}
 
 					tg.WorldStateMutex.Unlock()
@@ -274,11 +275,13 @@ func (tg *Tangel) PublishTransaction(txCode uint64, arg []string) {
 	// }
 
 	newTx.Pow()
-	loglogrus.Log.Infof("[Tangle] 当前节点(%s:%d) Pow计算得到的新交易的 TxID(%x) 此时的Nonce(%d)\n", tg.peer.LocalAddr.IP, tg.peer.LocalAddr.Port, newTx.RawTx.TxID, newTx.RawTx.Nonce)
+	loglogrus.Log.Infof("[Tangle] 当前节点(%s) Pow计算得到的新交易的 TxID(%x) 此时的Nonce(%d)\n", tg.peer.LocalUrl, newTx.RawTx.TxID, newTx.RawTx.Nonce)
 
 	// 需要将该交易广播出去
 	wrapMsg := EncodeTxToWrapMsg(newTx, tg.peer.BackPrvKey())
-	tg.peer.Broadcast(wrapMsg)
+	jsonBytes, _ := json.Marshal(*wrapMsg)
+
+	tg.peer.Broadcast(jsonBytes, "/newTx")
 
 	tg.candidateTipMutex.Lock()
 	tg.CandidateTips[newTx.RawTx.TxID] = newTx.RawTx // 交易加入到候选tip集合

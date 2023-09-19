@@ -1,0 +1,4 @@
+[2023-09-18 16:52:40] [info] client.go:80 blockChain_consensus/pbftChain/client.(*Client).CommonWrite [Client] 客户端发送请求: Common::Write args0:key  args1:value
+
+[2023-09-18 16:52:41] [info] client.go:100 blockChain_consensus/pbftChain/client.(*Client).CommonRead [Client] 客户端发送请求: Common::Read args:key
+

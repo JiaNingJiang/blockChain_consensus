@@ -1,0 +1,444 @@
+[2023-09-18 16:52:40] [info] consensusInterface.go:100 blockChain_consensus/pbftChain/pbft/network.GetReq.func1 当前节点(MainNode)获取的Request Msg:  ClientID: client1, Timestamp: 1695027160854621300, Operation: Common::Write
+
+[2023-09-18 16:52:41] [info] node.go:251 blockChain_consensus/pbftChain/pbft/network.(*Node).GetReq 接收的Requst Msg: ClientID: client1, Timestamp: 1695027160854621300, Operation: Common::Write
+
+[2023-09-18 16:52:41] [info] node.go:229 blockChain_consensus/pbftChain/pbft/network.(*Node).transactionConsensus 当前节点(MainNode)收集的交易数量为(1),不足以构成一个区块,但是到达了规定的共识间隔,因此主动发起一轮共识
+
+[2023-09-18 16:52:41] [info] consensusInterface.go:114 blockChain_consensus/pbftChain/pbft/network.GetPrePrepare.func1 当前节点(ReplicaNode1)获取的Pre-prepare Msg:  TxID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID: 1695027161804593500, BlockID: (25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), TxCount:(1)
+
+[2023-09-18 16:52:41] [info] consensusInterface.go:114 blockChain_consensus/pbftChain/pbft/network.GetPrePrepare.func1 当前节点(ReplicaNode2)获取的Pre-prepare Msg:  TxID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID: 1695027161804593500, BlockID: (25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), TxCount:(1)
+
+[2023-09-18 16:52:41] [info] consensusInterface.go:114 blockChain_consensus/pbftChain/pbft/network.GetPrePrepare.func1 当前节点(ReplicaNode3)获取的Pre-prepare Msg:  TxID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID: 1695027161804593500, BlockID: (25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), TxCount:(1)
+
+[2023-09-18 16:52:41] [info] node.go:235 blockChain_consensus/pbftChain/pbft/network.(*Node).transactionConsensus 当前节点id:(MainNode) 已完成 Pre-prepare阶段
+
+[2023-09-18 16:52:41] [info] consensusInterface.go:100 blockChain_consensus/pbftChain/pbft/network.GetReq.func1 当前节点(MainNode)获取的Request Msg:  ClientID: client1, Timestamp: 1695027161865833100, Operation: Common::Read
+
+[2023-09-18 16:52:42] [info] node.go:283 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrePrepare 接收的Pre-prepare Msg: SenderName: MainNode, SenderID: 97d6ad8bddd2f0d7ef03ae0b8d412246f6844003932f745416ddaddd2010a2a3020f7e273b6d2b078e8ba9f5deb2e7ec72cdf24acc40cac2b28b21ec433b6589, BlockID: 25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f
+
+[2023-09-18 16:52:42] [info] node.go:283 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrePrepare 接收的Pre-prepare Msg: SenderName: MainNode, SenderID: 97d6ad8bddd2f0d7ef03ae0b8d412246f6844003932f745416ddaddd2010a2a3020f7e273b6d2b078e8ba9f5deb2e7ec72cdf24acc40cac2b28b21ec433b6589, BlockID: 25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f
+
+[2023-09-18 16:52:42] [info] pbft_impl.go:118 blockChain_consensus/pbftChain/pbft/consensus.(*State).PrePrepare 当前节点(ReplicaNode1)收到的 pre-prepare Msg 中区块包含的数字签名个数为:1
+
+[2023-09-18 16:52:42] [info] pbft_impl.go:118 blockChain_consensus/pbftChain/pbft/consensus.(*State).PrePrepare 当前节点(ReplicaNode2)收到的 pre-prepare Msg 中区块包含的数字签名个数为:1
+
+[2023-09-18 16:52:42] [info] node.go:312 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrePrepare 当前节点id:ReplicaNode2 已完成 Pre-prepare阶段
+
+[2023-09-18 16:52:42] [info] node.go:312 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrePrepare 当前节点id:ReplicaNode1 已完成 Pre-prepare阶段
+
+[2023-09-18 16:52:42] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(MainNode)获取的Prepare Msg:  NodeName:(ReplicaNode2), NodeID:(de8f682121e0c6bea800b9c21b954572bb57703333de71d55fa680dd6181bb0a89daa49c33276fb45c2f4accb40737334fdbaf9e278981e1b3fda3983818aa41), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:42] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(MainNode)获取的Prepare Msg:  NodeName:(ReplicaNode1), NodeID:(e11b5f45c64b12cbd374bf2886c351429f734bca73de97dae10044acf7ff80b180b1f69047ffaef4a945db7909ae7904999c72a017b4bfda4c6596a350900520), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:42] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(MainNode)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode2)
+
+[2023-09-18 16:52:42] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(ReplicaNode1)获取的Prepare Msg:  NodeName:(ReplicaNode2), NodeID:(de8f682121e0c6bea800b9c21b954572bb57703333de71d55fa680dd6181bb0a89daa49c33276fb45c2f4accb40737334fdbaf9e278981e1b3fda3983818aa41), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:42] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode1)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode2)
+
+[2023-09-18 16:52:42] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(MainNode)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode1)
+
+[2023-09-18 16:52:42] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(ReplicaNode3)获取的Prepare Msg:  NodeName:(ReplicaNode2), NodeID:(de8f682121e0c6bea800b9c21b954572bb57703333de71d55fa680dd6181bb0a89daa49c33276fb45c2f4accb40737334fdbaf9e278981e1b3fda3983818aa41), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:42] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode3)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode2)
+
+[2023-09-18 16:52:42] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(ReplicaNode2)获取的Prepare Msg:  NodeName:(ReplicaNode1), NodeID:(e11b5f45c64b12cbd374bf2886c351429f734bca73de97dae10044acf7ff80b180b1f69047ffaef4a945db7909ae7904999c72a017b4bfda4c6596a350900520), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:42] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode2)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode1)
+
+[2023-09-18 16:52:42] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(ReplicaNode3)获取的Prepare Msg:  NodeName:(ReplicaNode1), NodeID:(e11b5f45c64b12cbd374bf2886c351429f734bca73de97dae10044acf7ff80b180b1f69047ffaef4a945db7909ae7904999c72a017b4bfda4c6596a350900520), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:42] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode3)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode1)
+
+[2023-09-18 16:52:42] [info] node.go:283 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrePrepare 接收的Pre-prepare Msg: SenderName: MainNode, SenderID: 97d6ad8bddd2f0d7ef03ae0b8d412246f6844003932f745416ddaddd2010a2a3020f7e273b6d2b078e8ba9f5deb2e7ec72cdf24acc40cac2b28b21ec433b6589, BlockID: 25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f
+
+[2023-09-18 16:52:42] [info] pbft_impl.go:118 blockChain_consensus/pbftChain/pbft/consensus.(*State).PrePrepare 当前节点(ReplicaNode3)收到的 pre-prepare Msg 中区块包含的数字签名个数为:1
+
+[2023-09-18 16:52:42] [info] node.go:312 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrePrepare 当前节点id:ReplicaNode3 已完成 Pre-prepare阶段
+
+[2023-09-18 16:52:42] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(MainNode)获取的Prepare Msg:  NodeName:(ReplicaNode3), NodeID:(c5859c7cf4f4bc5473aa8307f37921b81d807814306d04dad3d9a4f862812f0ffab3f26ffa8a4da642f04ffda5b91704cc5d4a6b6dedb206aeee895ce28d5559), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:42] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(MainNode)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode3)
+
+[2023-09-18 16:52:42] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(ReplicaNode1)获取的Prepare Msg:  NodeName:(ReplicaNode3), NodeID:(c5859c7cf4f4bc5473aa8307f37921b81d807814306d04dad3d9a4f862812f0ffab3f26ffa8a4da642f04ffda5b91704cc5d4a6b6dedb206aeee895ce28d5559), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:42] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode1)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode3)
+
+[2023-09-18 16:52:42] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(ReplicaNode2)获取的Prepare Msg:  NodeName:(ReplicaNode3), NodeID:(c5859c7cf4f4bc5473aa8307f37921b81d807814306d04dad3d9a4f862812f0ffab3f26ffa8a4da642f04ffda5b91704cc5d4a6b6dedb206aeee895ce28d5559), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:42] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode2)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode3)
+
+[2023-09-18 16:52:43] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(ReplicaNode2) 接收的Prepare Msg: NodeName: ReplicaNode1
+
+[2023-09-18 16:52:43] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(MainNode) 接收的Prepare Msg: NodeName: ReplicaNode2
+
+[2023-09-18 16:52:43] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(ReplicaNode1) 接收的Prepare Msg: NodeName: ReplicaNode2
+
+[2023-09-18 16:52:43] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(ReplicaNode2)已搜集的Prepare消息Vote Num:1
+[2023-09-18 16:52:43] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(ReplicaNode1)已搜集的Prepare消息Vote Num:1
+[2023-09-18 16:52:43] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(MainNode)已搜集的Prepare消息Vote Num:1
+[2023-09-18 16:52:43] [info] pbft_impl.go:353 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared [pbft] 当前节点(MainNode)没有收集到足够数量(当前数量:1  目标数量:2)的 Prepare Msg
+
+[2023-09-18 16:52:43] [info] pbft_impl.go:353 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared [pbft] 当前节点(ReplicaNode1)没有收集到足够数量(当前数量:1  目标数量:2)的 Prepare Msg
+
+[2023-09-18 16:52:43] [info] pbft_impl.go:353 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared [pbft] 当前节点(ReplicaNode2)没有收集到足够数量(当前数量:1  目标数量:2)的 Prepare Msg
+
+[2023-09-18 16:52:43] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(ReplicaNode1) 接收的Prepare Msg: NodeName: ReplicaNode3
+
+[2023-09-18 16:52:43] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(MainNode) 接收的Prepare Msg: NodeName: ReplicaNode1
+
+[2023-09-18 16:52:43] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(ReplicaNode2) 接收的Prepare Msg: NodeName: ReplicaNode3
+
+[2023-09-18 16:52:43] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(ReplicaNode1)已搜集的Prepare消息Vote Num:2
+[2023-09-18 16:52:43] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(ReplicaNode2)已搜集的Prepare消息Vote Num:2
+[2023-09-18 16:52:43] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(MainNode)已搜集的Prepare消息Vote Num:2
+[2023-09-18 16:52:43] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode1)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:43] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(MainNode)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:43] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode2)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:43] [info] node.go:343 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点Name:ReplicaNode1 已完成 Prepare阶段
+[2023-09-18 16:52:43] [info] node.go:343 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点Name:MainNode 已完成 Prepare阶段
+[2023-09-18 16:52:43] [info] node.go:343 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点Name:ReplicaNode2 已完成 Prepare阶段
+[2023-09-18 16:52:43] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode3)获取的Commit Msg: NodeName:(ReplicaNode1), NodeID:(e11b5f45c64b12cbd374bf2886c351429f734bca73de97dae10044acf7ff80b180b1f69047ffaef4a945db7909ae7904999c72a017b4bfda4c6596a350900520), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:43] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode3)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode1)
+
+[2023-09-18 16:52:43] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode1)获取的Commit Msg: NodeName:(MainNode), NodeID:(97d6ad8bddd2f0d7ef03ae0b8d412246f6844003932f745416ddaddd2010a2a3020f7e273b6d2b078e8ba9f5deb2e7ec72cdf24acc40cac2b28b21ec433b6589), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:43] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode1)接收到 VoteMsg , MsgType:1 ,来源节点(MainNode)
+
+[2023-09-18 16:52:43] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(MainNode)获取的Commit Msg: NodeName:(ReplicaNode2), NodeID:(de8f682121e0c6bea800b9c21b954572bb57703333de71d55fa680dd6181bb0a89daa49c33276fb45c2f4accb40737334fdbaf9e278981e1b3fda3983818aa41), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:43] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(MainNode)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode2)
+
+[2023-09-18 16:52:43] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode2)获取的Commit Msg: NodeName:(MainNode), NodeID:(97d6ad8bddd2f0d7ef03ae0b8d412246f6844003932f745416ddaddd2010a2a3020f7e273b6d2b078e8ba9f5deb2e7ec72cdf24acc40cac2b28b21ec433b6589), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:43] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode2)接收到 VoteMsg , MsgType:1 ,来源节点(MainNode)
+
+[2023-09-18 16:52:43] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(MainNode)获取的Commit Msg: NodeName:(ReplicaNode1), NodeID:(e11b5f45c64b12cbd374bf2886c351429f734bca73de97dae10044acf7ff80b180b1f69047ffaef4a945db7909ae7904999c72a017b4bfda4c6596a350900520), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:43] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode1)获取的Commit Msg: NodeName:(ReplicaNode2), NodeID:(de8f682121e0c6bea800b9c21b954572bb57703333de71d55fa680dd6181bb0a89daa49c33276fb45c2f4accb40737334fdbaf9e278981e1b3fda3983818aa41), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:43] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(MainNode)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode1)
+
+[2023-09-18 16:52:43] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode3)获取的Commit Msg: NodeName:(MainNode), NodeID:(97d6ad8bddd2f0d7ef03ae0b8d412246f6844003932f745416ddaddd2010a2a3020f7e273b6d2b078e8ba9f5deb2e7ec72cdf24acc40cac2b28b21ec433b6589), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:43] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode3)接收到 VoteMsg , MsgType:1 ,来源节点(MainNode)
+
+[2023-09-18 16:52:43] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode1)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode2)
+
+[2023-09-18 16:52:43] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode2)获取的Commit Msg: NodeName:(ReplicaNode1), NodeID:(e11b5f45c64b12cbd374bf2886c351429f734bca73de97dae10044acf7ff80b180b1f69047ffaef4a945db7909ae7904999c72a017b4bfda4c6596a350900520), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:43] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode3)获取的Commit Msg: NodeName:(ReplicaNode2), NodeID:(de8f682121e0c6bea800b9c21b954572bb57703333de71d55fa680dd6181bb0a89daa49c33276fb45c2f4accb40737334fdbaf9e278981e1b3fda3983818aa41), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:43] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode2)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode1)
+
+[2023-09-18 16:52:43] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode3)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode2)
+
+[2023-09-18 16:52:43] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(ReplicaNode3) 接收的Prepare Msg: NodeName: ReplicaNode2
+
+[2023-09-18 16:52:43] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(ReplicaNode3)已搜集的Prepare消息Vote Num:1
+[2023-09-18 16:52:43] [info] pbft_impl.go:353 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared [pbft] 当前节点(ReplicaNode3)没有收集到足够数量(当前数量:1  目标数量:2)的 Prepare Msg
+
+[2023-09-18 16:52:43] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(ReplicaNode3) 接收的Prepare Msg: NodeName: ReplicaNode1
+
+[2023-09-18 16:52:43] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(ReplicaNode3)已搜集的Prepare消息Vote Num:2
+[2023-09-18 16:52:43] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode3)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:43] [info] node.go:343 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点Name:ReplicaNode3 已完成 Prepare阶段
+[2023-09-18 16:52:43] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(MainNode)获取的Commit Msg: NodeName:(ReplicaNode3), NodeID:(c5859c7cf4f4bc5473aa8307f37921b81d807814306d04dad3d9a4f862812f0ffab3f26ffa8a4da642f04ffda5b91704cc5d4a6b6dedb206aeee895ce28d5559), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:43] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(MainNode)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode3)
+
+[2023-09-18 16:52:43] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode1)获取的Commit Msg: NodeName:(ReplicaNode3), NodeID:(c5859c7cf4f4bc5473aa8307f37921b81d807814306d04dad3d9a4f862812f0ffab3f26ffa8a4da642f04ffda5b91704cc5d4a6b6dedb206aeee895ce28d5559), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:43] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode1)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode3)
+
+[2023-09-18 16:52:43] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode2)获取的Commit Msg: NodeName:(ReplicaNode3), NodeID:(c5859c7cf4f4bc5473aa8307f37921b81d807814306d04dad3d9a4f862812f0ffab3f26ffa8a4da642f04ffda5b91704cc5d4a6b6dedb206aeee895ce28d5559), BlockID:(25e72a0f09d4fdfa3817a8b64843b9c9e40766a852591d3ea6cb62136398143f), SequenceID:(1695027161804593500)
+
+[2023-09-18 16:52:43] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode2)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode3)
+
+[2023-09-18 16:52:44] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(ReplicaNode1) 接收的Commit Msg: NodeName: MainNode
+
+[2023-09-18 16:52:44] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(ReplicaNode2) 接收的Commit Msg: NodeName: ReplicaNode1
+
+[2023-09-18 16:52:44] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(MainNode) 接收的Commit Msg: NodeName: ReplicaNode1
+
+[2023-09-18 16:52:44] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode2)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:44] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(ReplicaNode2) 接收的Commit Msg: NodeName: ReplicaNode3
+
+[2023-09-18 16:52:44] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode1)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:44] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(MainNode)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:44] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(ReplicaNode1) 接收的Commit Msg: NodeName: ReplicaNode2
+
+[2023-09-18 16:52:44] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(MainNode) 接收的Commit Msg: NodeName: ReplicaNode3
+
+[2023-09-18 16:52:44] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode2)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:44] [info] common.go:45 blockChain_consensus/pbftChain/pbft/contract.CommonExecuteWrite [Contract] 执行Common::Write成功   key:key  value:value
+
+[2023-09-18 16:52:44] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode1)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:44] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(MainNode)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:44] [info] common.go:45 blockChain_consensus/pbftChain/pbft/contract.CommonExecuteWrite [Contract] 执行Common::Write成功   key:key  value:value
+
+[2023-09-18 16:52:44] [info] common.go:45 blockChain_consensus/pbftChain/pbft/contract.CommonExecuteWrite [Contract] 执行Common::Write成功   key:key  value:value
+
+[2023-09-18 16:52:44] [info] node.go:381 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点id:(ReplicaNode2) 已完成 Commit阶段
+[2023-09-18 16:52:44] [info] node.go:381 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点id:(ReplicaNode1) 已完成 Commit阶段
+[2023-09-18 16:52:44] [info] node.go:381 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点id:(MainNode) 已完成 Commit阶段
+[2023-09-18 16:52:44] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(ReplicaNode3) 接收的Commit Msg: NodeName: ReplicaNode1
+
+[2023-09-18 16:52:44] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode3)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:44] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(ReplicaNode3) 接收的Commit Msg: NodeName: MainNode
+
+[2023-09-18 16:52:44] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode3)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:44] [info] common.go:45 blockChain_consensus/pbftChain/pbft/contract.CommonExecuteWrite [Contract] 执行Common::Write成功   key:key  value:value
+
+[2023-09-18 16:52:44] [info] node.go:381 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点id:(ReplicaNode3) 已完成 Commit阶段
+[2023-09-18 16:52:45] [info] node.go:400 blockChain_consensus/pbftChain/pbft/network.(*Node).GetReply 接收的Result Msg: {client1 127.0.0.1:8001 1695027160854621300 Common Write key value  写入成功 nil} by MainNode
+
+[2023-09-18 16:52:45] [info] node.go:400 blockChain_consensus/pbftChain/pbft/network.(*Node).GetReply 接收的Result Msg: {client1 127.0.0.1:8001 1695027160854621300 Common Write key value  写入成功 nil} by ReplicaNode3
+
+[2023-09-18 16:52:45] [info] node.go:400 blockChain_consensus/pbftChain/pbft/network.(*Node).GetReply 接收的Result Msg: {client1 127.0.0.1:8001 1695027160854621300 Common Write key value  写入成功 nil} by ReplicaNode2
+
+[2023-09-18 16:52:45] [info] node.go:400 blockChain_consensus/pbftChain/pbft/network.(*Node).GetReply 接收的Result Msg: {client1 127.0.0.1:8001 1695027160854621300 Common Write key value  写入成功 nil} by ReplicaNode1
+
+[2023-09-18 16:52:45] [info] node.go:753 blockChain_consensus/pbftChain/pbft/network.(*Node).resolveReplyMsg 来自节点(e11b5f45c64b12cbd374bf2886c351429f734bca73de97dae10044acf7ff80b180b1f69047ffaef4a945db7909ae7904999c72a017b4bfda4c6596a350900520) 的有效交易回执数量: 1
+
+[2023-09-18 16:52:45] [info] node.go:753 blockChain_consensus/pbftChain/pbft/network.(*Node).resolveReplyMsg 来自节点(97d6ad8bddd2f0d7ef03ae0b8d412246f6844003932f745416ddaddd2010a2a3020f7e273b6d2b078e8ba9f5deb2e7ec72cdf24acc40cac2b28b21ec433b6589) 的有效交易回执数量: 1
+
+[2023-09-18 16:52:45] [info] node.go:753 blockChain_consensus/pbftChain/pbft/network.(*Node).resolveReplyMsg 来自节点(c5859c7cf4f4bc5473aa8307f37921b81d807814306d04dad3d9a4f862812f0ffab3f26ffa8a4da642f04ffda5b91704cc5d4a6b6dedb206aeee895ce28d5559) 的有效交易回执数量: 1
+
+[2023-09-18 16:52:45] [info] node.go:753 blockChain_consensus/pbftChain/pbft/network.(*Node).resolveReplyMsg 来自节点(de8f682121e0c6bea800b9c21b954572bb57703333de71d55fa680dd6181bb0a89daa49c33276fb45c2f4accb40737334fdbaf9e278981e1b3fda3983818aa41) 的有效交易回执数量: 1
+
+[2023-09-18 16:52:45] [info] node.go:765 blockChain_consensus/pbftChain/pbft/network.(*Node).resolveReplyMsg 客户端请求执行成功,执行结果:写入成功
+
+[2023-09-18 16:52:46] [info] node.go:251 blockChain_consensus/pbftChain/pbft/network.(*Node).GetReq 接收的Requst Msg: ClientID: client1, Timestamp: 1695027161865833100, Operation: Common::Read
+
+[2023-09-18 16:52:47] [info] node.go:229 blockChain_consensus/pbftChain/pbft/network.(*Node).transactionConsensus 当前节点(MainNode)收集的交易数量为(1),不足以构成一个区块,但是到达了规定的共识间隔,因此主动发起一轮共识
+
+[2023-09-18 16:52:47] [info] consensusInterface.go:114 blockChain_consensus/pbftChain/pbft/network.GetPrePrepare.func1 当前节点(ReplicaNode1)获取的Pre-prepare Msg:  TxID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID: 1695027167792404300, BlockID: (78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), TxCount:(1)
+
+[2023-09-18 16:52:47] [info] consensusInterface.go:114 blockChain_consensus/pbftChain/pbft/network.GetPrePrepare.func1 当前节点(ReplicaNode2)获取的Pre-prepare Msg:  TxID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID: 1695027167792404300, BlockID: (78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), TxCount:(1)
+
+[2023-09-18 16:52:47] [info] consensusInterface.go:114 blockChain_consensus/pbftChain/pbft/network.GetPrePrepare.func1 当前节点(ReplicaNode3)获取的Pre-prepare Msg:  TxID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID: 1695027167792404300, BlockID: (78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), TxCount:(1)
+
+[2023-09-18 16:52:47] [info] node.go:235 blockChain_consensus/pbftChain/pbft/network.(*Node).transactionConsensus 当前节点id:(MainNode) 已完成 Pre-prepare阶段
+
+[2023-09-18 16:52:48] [info] node.go:283 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrePrepare 接收的Pre-prepare Msg: SenderName: MainNode, SenderID: 97d6ad8bddd2f0d7ef03ae0b8d412246f6844003932f745416ddaddd2010a2a3020f7e273b6d2b078e8ba9f5deb2e7ec72cdf24acc40cac2b28b21ec433b6589, BlockID: 78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180
+
+[2023-09-18 16:52:48] [info] node.go:283 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrePrepare 接收的Pre-prepare Msg: SenderName: MainNode, SenderID: 97d6ad8bddd2f0d7ef03ae0b8d412246f6844003932f745416ddaddd2010a2a3020f7e273b6d2b078e8ba9f5deb2e7ec72cdf24acc40cac2b28b21ec433b6589, BlockID: 78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180
+
+[2023-09-18 16:52:48] [info] pbft_impl.go:118 blockChain_consensus/pbftChain/pbft/consensus.(*State).PrePrepare 当前节点(ReplicaNode2)收到的 pre-prepare Msg 中区块包含的数字签名个数为:1
+
+[2023-09-18 16:52:48] [info] pbft_impl.go:118 blockChain_consensus/pbftChain/pbft/consensus.(*State).PrePrepare 当前节点(ReplicaNode1)收到的 pre-prepare Msg 中区块包含的数字签名个数为:1
+
+[2023-09-18 16:52:48] [info] node.go:312 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrePrepare 当前节点id:ReplicaNode1 已完成 Pre-prepare阶段
+
+[2023-09-18 16:52:48] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(ReplicaNode2)获取的Prepare Msg:  NodeName:(ReplicaNode1), NodeID:(e11b5f45c64b12cbd374bf2886c351429f734bca73de97dae10044acf7ff80b180b1f69047ffaef4a945db7909ae7904999c72a017b4bfda4c6596a350900520), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:48] [info] node.go:312 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrePrepare 当前节点id:ReplicaNode2 已完成 Pre-prepare阶段
+
+[2023-09-18 16:52:48] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode2)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode1)
+
+[2023-09-18 16:52:48] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(ReplicaNode3)获取的Prepare Msg:  NodeName:(ReplicaNode1), NodeID:(e11b5f45c64b12cbd374bf2886c351429f734bca73de97dae10044acf7ff80b180b1f69047ffaef4a945db7909ae7904999c72a017b4bfda4c6596a350900520), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:48] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(ReplicaNode3)获取的Prepare Msg:  NodeName:(ReplicaNode2), NodeID:(de8f682121e0c6bea800b9c21b954572bb57703333de71d55fa680dd6181bb0a89daa49c33276fb45c2f4accb40737334fdbaf9e278981e1b3fda3983818aa41), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:48] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(MainNode)获取的Prepare Msg:  NodeName:(ReplicaNode1), NodeID:(e11b5f45c64b12cbd374bf2886c351429f734bca73de97dae10044acf7ff80b180b1f69047ffaef4a945db7909ae7904999c72a017b4bfda4c6596a350900520), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:48] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode3)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode1)
+
+[2023-09-18 16:52:48] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode3)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode2)
+
+[2023-09-18 16:52:48] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(MainNode)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode1)
+
+[2023-09-18 16:52:48] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(MainNode)获取的Prepare Msg:  NodeName:(ReplicaNode2), NodeID:(de8f682121e0c6bea800b9c21b954572bb57703333de71d55fa680dd6181bb0a89daa49c33276fb45c2f4accb40737334fdbaf9e278981e1b3fda3983818aa41), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:48] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(MainNode)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode2)
+
+[2023-09-18 16:52:48] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(ReplicaNode1)获取的Prepare Msg:  NodeName:(ReplicaNode2), NodeID:(de8f682121e0c6bea800b9c21b954572bb57703333de71d55fa680dd6181bb0a89daa49c33276fb45c2f4accb40737334fdbaf9e278981e1b3fda3983818aa41), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:48] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode1)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode2)
+
+[2023-09-18 16:52:48] [info] node.go:283 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrePrepare 接收的Pre-prepare Msg: SenderName: MainNode, SenderID: 97d6ad8bddd2f0d7ef03ae0b8d412246f6844003932f745416ddaddd2010a2a3020f7e273b6d2b078e8ba9f5deb2e7ec72cdf24acc40cac2b28b21ec433b6589, BlockID: 78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180
+
+[2023-09-18 16:52:48] [info] pbft_impl.go:118 blockChain_consensus/pbftChain/pbft/consensus.(*State).PrePrepare 当前节点(ReplicaNode3)收到的 pre-prepare Msg 中区块包含的数字签名个数为:1
+
+[2023-09-18 16:52:48] [info] node.go:312 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrePrepare 当前节点id:ReplicaNode3 已完成 Pre-prepare阶段
+
+[2023-09-18 16:52:48] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(MainNode)获取的Prepare Msg:  NodeName:(ReplicaNode3), NodeID:(c5859c7cf4f4bc5473aa8307f37921b81d807814306d04dad3d9a4f862812f0ffab3f26ffa8a4da642f04ffda5b91704cc5d4a6b6dedb206aeee895ce28d5559), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:48] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(MainNode)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode3)
+
+[2023-09-18 16:52:48] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(ReplicaNode1)获取的Prepare Msg:  NodeName:(ReplicaNode3), NodeID:(c5859c7cf4f4bc5473aa8307f37921b81d807814306d04dad3d9a4f862812f0ffab3f26ffa8a4da642f04ffda5b91704cc5d4a6b6dedb206aeee895ce28d5559), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:48] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode1)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode3)
+
+[2023-09-18 16:52:48] [info] consensusInterface.go:130 blockChain_consensus/pbftChain/pbft/network.GetPrepare.func1 当前节点(ReplicaNode2)获取的Prepare Msg:  NodeName:(ReplicaNode3), NodeID:(c5859c7cf4f4bc5473aa8307f37921b81d807814306d04dad3d9a4f862812f0ffab3f26ffa8a4da642f04ffda5b91704cc5d4a6b6dedb206aeee895ce28d5559), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:48] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode2)接收到 VoteMsg , MsgType:0 ,来源节点(ReplicaNode3)
+
+[2023-09-18 16:52:49] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(MainNode) 接收的Prepare Msg: NodeName: ReplicaNode1
+
+[2023-09-18 16:52:49] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(ReplicaNode2) 接收的Prepare Msg: NodeName: ReplicaNode1
+
+[2023-09-18 16:52:49] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(ReplicaNode1) 接收的Prepare Msg: NodeName: ReplicaNode2
+
+[2023-09-18 16:52:49] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(MainNode)已搜集的Prepare消息Vote Num:1
+[2023-09-18 16:52:49] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(ReplicaNode1)已搜集的Prepare消息Vote Num:1
+[2023-09-18 16:52:49] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(ReplicaNode2)已搜集的Prepare消息Vote Num:1
+[2023-09-18 16:52:49] [info] pbft_impl.go:353 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared [pbft] 当前节点(MainNode)没有收集到足够数量(当前数量:1  目标数量:2)的 Prepare Msg
+
+[2023-09-18 16:52:49] [info] pbft_impl.go:353 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared [pbft] 当前节点(ReplicaNode1)没有收集到足够数量(当前数量:1  目标数量:2)的 Prepare Msg
+
+[2023-09-18 16:52:49] [info] pbft_impl.go:353 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared [pbft] 当前节点(ReplicaNode2)没有收集到足够数量(当前数量:1  目标数量:2)的 Prepare Msg
+
+[2023-09-18 16:52:49] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(ReplicaNode1) 接收的Prepare Msg: NodeName: ReplicaNode3
+
+[2023-09-18 16:52:49] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(ReplicaNode2) 接收的Prepare Msg: NodeName: ReplicaNode3
+
+[2023-09-18 16:52:49] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(MainNode) 接收的Prepare Msg: NodeName: ReplicaNode2
+
+[2023-09-18 16:52:49] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(ReplicaNode1)已搜集的Prepare消息Vote Num:2
+[2023-09-18 16:52:49] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(MainNode)已搜集的Prepare消息Vote Num:2
+[2023-09-18 16:52:49] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(ReplicaNode2)已搜集的Prepare消息Vote Num:2
+[2023-09-18 16:52:49] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(MainNode)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:49] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode1)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:49] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode2)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:49] [info] node.go:343 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点Name:MainNode 已完成 Prepare阶段
+[2023-09-18 16:52:49] [info] node.go:343 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点Name:ReplicaNode2 已完成 Prepare阶段
+[2023-09-18 16:52:49] [info] node.go:343 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点Name:ReplicaNode1 已完成 Prepare阶段
+[2023-09-18 16:52:49] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(MainNode)获取的Commit Msg: NodeName:(ReplicaNode1), NodeID:(e11b5f45c64b12cbd374bf2886c351429f734bca73de97dae10044acf7ff80b180b1f69047ffaef4a945db7909ae7904999c72a017b4bfda4c6596a350900520), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:49] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode1)获取的Commit Msg: NodeName:(MainNode), NodeID:(97d6ad8bddd2f0d7ef03ae0b8d412246f6844003932f745416ddaddd2010a2a3020f7e273b6d2b078e8ba9f5deb2e7ec72cdf24acc40cac2b28b21ec433b6589), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:49] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(MainNode)获取的Commit Msg: NodeName:(ReplicaNode2), NodeID:(de8f682121e0c6bea800b9c21b954572bb57703333de71d55fa680dd6181bb0a89daa49c33276fb45c2f4accb40737334fdbaf9e278981e1b3fda3983818aa41), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:49] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode1)接收到 VoteMsg , MsgType:1 ,来源节点(MainNode)
+
+[2023-09-18 16:52:49] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode2)获取的Commit Msg: NodeName:(MainNode), NodeID:(97d6ad8bddd2f0d7ef03ae0b8d412246f6844003932f745416ddaddd2010a2a3020f7e273b6d2b078e8ba9f5deb2e7ec72cdf24acc40cac2b28b21ec433b6589), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:49] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(MainNode)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode1)
+
+[2023-09-18 16:52:49] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode2)获取的Commit Msg: NodeName:(ReplicaNode1), NodeID:(e11b5f45c64b12cbd374bf2886c351429f734bca73de97dae10044acf7ff80b180b1f69047ffaef4a945db7909ae7904999c72a017b4bfda4c6596a350900520), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:49] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(MainNode)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode2)
+
+[2023-09-18 16:52:49] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode3)获取的Commit Msg: NodeName:(MainNode), NodeID:(97d6ad8bddd2f0d7ef03ae0b8d412246f6844003932f745416ddaddd2010a2a3020f7e273b6d2b078e8ba9f5deb2e7ec72cdf24acc40cac2b28b21ec433b6589), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:49] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode2)接收到 VoteMsg , MsgType:1 ,来源节点(MainNode)
+
+[2023-09-18 16:52:49] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode3)接收到 VoteMsg , MsgType:1 ,来源节点(MainNode)
+
+[2023-09-18 16:52:49] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode1)获取的Commit Msg: NodeName:(ReplicaNode2), NodeID:(de8f682121e0c6bea800b9c21b954572bb57703333de71d55fa680dd6181bb0a89daa49c33276fb45c2f4accb40737334fdbaf9e278981e1b3fda3983818aa41), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:49] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode1)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode2)
+
+[2023-09-18 16:52:49] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode2)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode1)
+
+[2023-09-18 16:52:49] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode3)获取的Commit Msg: NodeName:(ReplicaNode1), NodeID:(e11b5f45c64b12cbd374bf2886c351429f734bca73de97dae10044acf7ff80b180b1f69047ffaef4a945db7909ae7904999c72a017b4bfda4c6596a350900520), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:49] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode3)获取的Commit Msg: NodeName:(ReplicaNode2), NodeID:(de8f682121e0c6bea800b9c21b954572bb57703333de71d55fa680dd6181bb0a89daa49c33276fb45c2f4accb40737334fdbaf9e278981e1b3fda3983818aa41), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:49] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode3)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode1)
+
+[2023-09-18 16:52:49] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode3)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode2)
+
+[2023-09-18 16:52:49] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(ReplicaNode3) 接收的Prepare Msg: NodeName: ReplicaNode1
+
+[2023-09-18 16:52:49] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(ReplicaNode3)已搜集的Prepare消息Vote Num:1
+[2023-09-18 16:52:49] [info] pbft_impl.go:353 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared [pbft] 当前节点(ReplicaNode3)没有收集到足够数量(当前数量:1  目标数量:2)的 Prepare Msg
+
+[2023-09-18 16:52:49] [info] node.go:322 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点(ReplicaNode3) 接收的Prepare Msg: NodeName: ReplicaNode2
+
+[2023-09-18 16:52:49] [debug] pbft_impl.go:200 blockChain_consensus/pbftChain/pbft/consensus.(*State).Prepare 当前节点(ReplicaNode3)已搜集的Prepare消息Vote Num:2
+[2023-09-18 16:52:49] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode3)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:49] [info] node.go:343 blockChain_consensus/pbftChain/pbft/network.(*Node).GetPrepare 当前节点Name:ReplicaNode3 已完成 Prepare阶段
+[2023-09-18 16:52:49] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode1)获取的Commit Msg: NodeName:(ReplicaNode3), NodeID:(c5859c7cf4f4bc5473aa8307f37921b81d807814306d04dad3d9a4f862812f0ffab3f26ffa8a4da642f04ffda5b91704cc5d4a6b6dedb206aeee895ce28d5559), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:49] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode1)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode3)
+
+[2023-09-18 16:52:49] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(ReplicaNode2)获取的Commit Msg: NodeName:(ReplicaNode3), NodeID:(c5859c7cf4f4bc5473aa8307f37921b81d807814306d04dad3d9a4f862812f0ffab3f26ffa8a4da642f04ffda5b91704cc5d4a6b6dedb206aeee895ce28d5559), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:49] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(ReplicaNode2)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode3)
+
+[2023-09-18 16:52:49] [info] consensusInterface.go:146 blockChain_consensus/pbftChain/pbft/network.GetCommit.func1 当前节点(MainNode)获取的Commit Msg: NodeName:(ReplicaNode3), NodeID:(c5859c7cf4f4bc5473aa8307f37921b81d807814306d04dad3d9a4f862812f0ffab3f26ffa8a4da642f04ffda5b91704cc5d4a6b6dedb206aeee895ce28d5559), BlockID:(78484057b9e8810ce9949fc76a6be7a9e0e3ae78ed878c4a794b5acec0ed6180), SequenceID:(1695027167792404300)
+
+[2023-09-18 16:52:49] [info] node.go:470 blockChain_consensus/pbftChain/pbft/network.(*Node).routeMsg [network] 当前节点(MainNode)接收到 VoteMsg , MsgType:1 ,来源节点(ReplicaNode3)
+
+[2023-09-18 16:52:50] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(ReplicaNode2) 接收的Commit Msg: NodeName: MainNode
+
+[2023-09-18 16:52:50] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(MainNode) 接收的Commit Msg: NodeName: ReplicaNode3
+
+[2023-09-18 16:52:50] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(ReplicaNode1) 接收的Commit Msg: NodeName: ReplicaNode3
+
+[2023-09-18 16:52:50] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(MainNode)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:50] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode1)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:50] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode2)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:50] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(MainNode) 接收的Commit Msg: NodeName: ReplicaNode1
+
+[2023-09-18 16:52:50] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(ReplicaNode1) 接收的Commit Msg: NodeName: MainNode
+
+[2023-09-18 16:52:50] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(ReplicaNode2) 接收的Commit Msg: NodeName: ReplicaNode1
+
+[2023-09-18 16:52:50] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(MainNode)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:50] [info] common.go:58 blockChain_consensus/pbftChain/pbft/contract.CommonExecuteRead [Contract] 执行Common::Read成功   key:key  得到的value:value
+
+[2023-09-18 16:52:50] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode2)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:50] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode1)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:50] [info] common.go:58 blockChain_consensus/pbftChain/pbft/contract.CommonExecuteRead [Contract] 执行Common::Read成功   key:key  得到的value:value
+
+[2023-09-18 16:52:50] [info] common.go:58 blockChain_consensus/pbftChain/pbft/contract.CommonExecuteRead [Contract] 执行Common::Read成功   key:key  得到的value:value
+
+[2023-09-18 16:52:50] [info] node.go:381 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点id:(MainNode) 已完成 Commit阶段
+[2023-09-18 16:52:50] [info] node.go:381 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点id:(ReplicaNode2) 已完成 Commit阶段
+[2023-09-18 16:52:50] [info] node.go:381 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点id:(ReplicaNode1) 已完成 Commit阶段
+[2023-09-18 16:52:50] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(ReplicaNode3) 接收的Commit Msg: NodeName: MainNode
+
+[2023-09-18 16:52:50] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode3)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:50] [info] node.go:354 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点(ReplicaNode3) 接收的Commit Msg: NodeName: ReplicaNode1
+
+[2023-09-18 16:52:50] [info] pbft_impl.go:357 blockChain_consensus/pbftChain/pbft/consensus.(*State).prepared 当前节点(ReplicaNode3)收集到足够数量的 Prepare Msg,数量为:2
+
+[2023-09-18 16:52:50] [info] common.go:58 blockChain_consensus/pbftChain/pbft/contract.CommonExecuteRead [Contract] 执行Common::Read成功   key:key  得到的value:value
+
+[2023-09-18 16:52:50] [info] node.go:381 blockChain_consensus/pbftChain/pbft/network.(*Node).GetCommit 当前节点id:(ReplicaNode3) 已完成 Commit阶段
+[2023-09-18 16:52:51] [info] node.go:400 blockChain_consensus/pbftChain/pbft/network.(*Node).GetReply 接收的Result Msg: {client1 127.0.0.1:8001 1695027161865833100 Common Read key  value nil} by ReplicaNode2
+
+[2023-09-18 16:52:51] [info] node.go:400 blockChain_consensus/pbftChain/pbft/network.(*Node).GetReply 接收的Result Msg: {client1 127.0.0.1:8001 1695027161865833100 Common Read key  value nil} by ReplicaNode3
+
+[2023-09-18 16:52:51] [info] node.go:400 blockChain_consensus/pbftChain/pbft/network.(*Node).GetReply 接收的Result Msg: {client1 127.0.0.1:8001 1695027161865833100 Common Read key  value nil} by MainNode
+
+[2023-09-18 16:52:51] [info] node.go:400 blockChain_consensus/pbftChain/pbft/network.(*Node).GetReply 接收的Result Msg: {client1 127.0.0.1:8001 1695027161865833100 Common Read key  value nil} by ReplicaNode1
+
+[2023-09-18 16:52:51] [info] node.go:753 blockChain_consensus/pbftChain/pbft/network.(*Node).resolveReplyMsg 来自节点(de8f682121e0c6bea800b9c21b954572bb57703333de71d55fa680dd6181bb0a89daa49c33276fb45c2f4accb40737334fdbaf9e278981e1b3fda3983818aa41) 的有效交易回执数量: 1
+
+[2023-09-18 16:52:51] [info] node.go:753 blockChain_consensus/pbftChain/pbft/network.(*Node).resolveReplyMsg 来自节点(c5859c7cf4f4bc5473aa8307f37921b81d807814306d04dad3d9a4f862812f0ffab3f26ffa8a4da642f04ffda5b91704cc5d4a6b6dedb206aeee895ce28d5559) 的有效交易回执数量: 1
+
+[2023-09-18 16:52:51] [info] node.go:753 blockChain_consensus/pbftChain/pbft/network.(*Node).resolveReplyMsg 来自节点(97d6ad8bddd2f0d7ef03ae0b8d412246f6844003932f745416ddaddd2010a2a3020f7e273b6d2b078e8ba9f5deb2e7ec72cdf24acc40cac2b28b21ec433b6589) 的有效交易回执数量: 1
+
+[2023-09-18 16:52:51] [info] node.go:753 blockChain_consensus/pbftChain/pbft/network.(*Node).resolveReplyMsg 来自节点(e11b5f45c64b12cbd374bf2886c351429f734bca73de97dae10044acf7ff80b180b1f69047ffaef4a945db7909ae7904999c72a017b4bfda4c6596a350900520) 的有效交易回执数量: 1
+
+[2023-09-18 16:52:51] [info] node.go:765 blockChain_consensus/pbftChain/pbft/network.(*Node).resolveReplyMsg 客户端请求执行成功,执行结果:value
+

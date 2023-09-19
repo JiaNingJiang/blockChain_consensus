@@ -5,14 +5,16 @@ import (
 	"blockChain_consensus/tangleChain/crypto"
 	loglogrus "blockChain_consensus/tangleChain/log_logrus"
 	"blockChain_consensus/tangleChain/message"
-	"blockChain_consensus/tangleChain/rlp"
+	"bytes"
 	"crypto/ecdsa"
-	"fmt"
-	"net"
+	"encoding/json"
+	"net/http"
 	"os"
 	"reflect"
 	"sync"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -20,6 +22,11 @@ const (
 	nodeIDBuff           = 128
 	msgBuff              = 2048 * 10
 )
+
+type InitNodeInfo struct {
+	NodeID common.NodeID
+	Url    string
+}
 
 type Address struct {
 	IP   string
@@ -29,13 +36,12 @@ type Address struct {
 type RemotePeer struct {
 	NodeID     common.NodeID
 	RemoteAddr Address
-	Conn       net.Conn
 }
 
 type Peer struct {
-	LocalAddr    Address
-	ListenSocket net.Listener
-	Others       map[common.NodeID]*RemotePeer
+	LocalUrl       string
+	OthersUrl      map[string]common.NodeID
+	OthersUrlMutex sync.RWMutex
 
 	prvKey *ecdsa.PrivateKey
 	pubKey *ecdsa.PublicKey
@@ -45,19 +51,12 @@ type Peer struct {
 	MsgMutex    sync.RWMutex
 }
 
-func NewPeer(IP string, Port int) *Peer {
+func NewPeer(url string, otherPeers []string) *Peer {
 	peer := &Peer{
-		LocalAddr:   Address{IP: IP, Port: Port},
-		Others:      make(map[common.NodeID]*RemotePeer),
+		LocalUrl:    url,
+		OthersUrl:   make(map[string]common.NodeID),
 		MessagePool: make(map[common.Hash]message.MsgInterface),
 	}
-
-	listener, err := net.Listen("tcp", IP+fmt.Sprintf(":%d", Port))
-	if err != nil {
-		loglogrus.Log.Errorf("[P2P] 当前节点无法在(%s:%d)上进行TCP连接监听,err:%v\n", IP, Port, err)
-		os.Exit(1)
-	}
-	peer.ListenSocket = listener
 
 	if prv, err := crypto.GenerateKey(); err != nil { // 1.生成私钥
 		loglogrus.Log.Errorf("[P2P] 当前节点无法无法生成私钥,err:%v\n", err)
@@ -68,8 +67,10 @@ func NewPeer(IP string, Port int) *Peer {
 		peer.nodeID = crypto.KeytoNodeID(peer.pubKey) // 3.生成NodeID
 	}
 
-	go peer.Receive() // 启动p2p服务器部分
-	go peer.Expire()  // 启动过期消息销毁协程
+	peer.InitRouter()
+
+	go peer.Expire()         // 启动过期消息销毁协程
+	go peer.HttpInitialize() // 消息处理协程
 
 	return peer
 }
@@ -86,149 +87,101 @@ func (peer *Peer) BackNodeID() common.NodeID {
 	return peer.nodeID
 }
 
-// 与其他节点建立TCP连接
-func (peer *Peer) LookUpOthers(remoteAddrs []*Address) {
-	for _, remote := range remoteAddrs {
-		if reflect.DeepEqual(*remote, peer.LocalAddr) { // 不需要与自己建立连接
+func (peer *Peer) InitRouter() *gin.Engine {
+
+	r := gin.New()
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
+	gin.SetMode("release")
+
+	consensus := r.Group("")
+
+	consensus.POST("/nodeInfo", GetNodeInfo(peer)) // 接收其他节点的标识符(NodeID)
+	consensus.POST("/newTx", GetNewTx(peer))       // 接收客户端的req
+
+	return r
+}
+
+func (peer *Peer) HttpInitialize() {
+	router := peer.InitRouter() //返回一个gin路由器
+
+	s := &http.Server{
+		Addr:           peer.LocalUrl,
+		Handler:        router,
+		ReadTimeout:    5 * time.Second,
+		WriteTimeout:   5 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+
+	go func() { // 指定时间间隔后向其他节点广播自己的NodeID等信息
+		time.Sleep(5 * time.Second)
+		// 向其他节点发送自己的的NodeID
+
+		nodeInfo := InitNodeInfo{peer.nodeID, peer.LocalUrl}
+		jsonBytes, _ := json.Marshal(nodeInfo)
+
+		peer.Broadcast(jsonBytes, "/nodeInfo")
+		loglogrus.Log.Infof("向其余节点广播自己的NodeInfo: NodeID(%x) LocalUrl(%s)\n", peer.nodeID, peer.LocalUrl)
+	}()
+
+	// 启动共识节点的Server对象,监听server.url,获取其他共识节点的消息并提供服务
+	loglogrus.Log.Infof("ConsensusNode will be started at %v...\n", peer.LocalUrl)
+	s.ListenAndServe()
+}
+
+func (peer *Peer) Broadcast(bytes []byte, path string) {
+
+	for addr, _ := range peer.OthersUrl { //遍历remoteAddrs, 获取其他共识节点的nodeID和url
+		if reflect.DeepEqual(addr, peer.LocalUrl) { // 不需要向自己发送
 			continue
 		}
-
-		if conn, err := net.Dial("tcp", remote.IP+fmt.Sprintf(":%d", remote.Port)); err != nil {
-			loglogrus.Log.Warnf("[P2P] 当前节点(%s:%d)与目标节点(%s:%d)建立tcp连接失败,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port,
-				remote.IP, remote.Port, err)
-			continue
-		} else {
-			// 1.等待来自对方节点发送的nodeID
-			rbuff := make([]byte, nodeIDBuff)
-			n, err := conn.Read(rbuff)
-			if err != nil {
-				loglogrus.Log.Warnf("[P2P] 接收NodeID数据失败,err:%v\n", err)
-				conn.Close()
-				continue
-			}
-			otherNodeID := new(common.NodeID)
-			if err := rlp.DecodeBytes(rbuff[:n], otherNodeID); err != nil {
-				loglogrus.Log.Errorf("[P2P] 当前节点(%s:%d)无法解码对端发送的的NodeID,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port, err)
-				conn.Close()
-				continue
-			}
-			peer.Others[*otherNodeID] = &RemotePeer{NodeID: *otherNodeID, RemoteAddr: Address{IP: remote.IP, Port: remote.Port}, Conn: conn}
-
-			loglogrus.Log.Infof("[P2P] 当前节点(%s:%d)(NodeID:%x)与目标节点(%s:%d)(NodeID:%x)成功建立tcp连接\n", peer.LocalAddr.IP, peer.LocalAddr.Port,
-				peer.nodeID, remote.IP, remote.Port, otherNodeID)
-
-			// 2.向对方发送自己的NodeID
-			if selfnodeIDBytes, err := rlp.EncodeToBytes(peer.nodeID); err != nil {
-				loglogrus.Log.Errorf("[P2P] 当前节点(%s:%d)无法编码自己的NodeID,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port, err)
-				conn.Close()
-				continue
-			} else {
-				if _, err := conn.Write(selfnodeIDBytes); err != nil {
-					loglogrus.Log.Errorf("[P2P] 当前节点(%s:%d)无法发送自己的NodeID,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port, err)
-					conn.Close()
-					continue
-				}
-			}
-		}
+		Send(addr+path, bytes) //发送到其他共识节点的相应目录下(不同目录存放不同阶段的共识消息)
 	}
 }
 
-func (peer *Peer) Broadcast(wrapMsg *message.WrapMessage) {
-	for _, remote := range peer.Others {
-		msgBytes := message.EncodeWrapMessageToBytes(wrapMsg)
-		if _, err := remote.Conn.Write(msgBytes); err != nil {
-			loglogrus.Log.Warnf("[P2P] 当前节点(%s:%d)向目标节点(%s:%d)发送tcp报文段失败,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port,
-				remote.RemoteAddr.IP, remote.RemoteAddr.Port, err)
-		} else {
-			// loglogrus.Log.Infof("[P2P] 当前节点(%s:%d)向目标节点(%s:%d)发送tcp报文段成功,长度(%d)\n", peer.LocalAddr.IP, peer.LocalAddr.Port,
-			// 	remote.RemoteAddr.IP, remote.RemoteAddr.Port, len(msgBytes))
-		}
-	}
+func Send(url string, msg []byte) {
+	buff := bytes.NewBuffer(msg)
+	http.Post("http://"+url, "application/json", buff)
 }
 
-func (peer *Peer) Send(desPeer *Address, wrapMsg *message.WrapMessage) {
-	dstPeer := &RemotePeer{}
-
-	for _, remote := range peer.Others {
-		if reflect.DeepEqual(remote.RemoteAddr, *desPeer) {
-			dstPeer.RemoteAddr = remote.RemoteAddr
-			dstPeer.Conn = remote.Conn
-		}
-	}
-	msgBytes := message.EncodeWrapMessageToBytes(wrapMsg)
-	if _, err := dstPeer.Conn.Write(msgBytes); err != nil {
-		loglogrus.Log.Warnf("[P2P] 当前节点(%s:%d)向目标节点(%s:%d)发送tcp报文段失败,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port,
-			dstPeer.RemoteAddr.IP, dstPeer.RemoteAddr.Port, err)
-	}
-}
-
-func (peer *Peer) Receive() {
-	for {
-		conn, err := peer.ListenSocket.Accept()
+func GetNodeInfo(peer *Peer) func(*gin.Context) {
+	return func(c *gin.Context) {
+		var msg InitNodeInfo
+		err := json.NewDecoder(c.Request.Body).Decode(&msg)
 		if err != nil {
-			loglogrus.Log.Warnf("[P2P] 当前节点(%s:%d)无法接收TCP连接请求,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port, err)
-			continue
+			loglogrus.Log.Errorf("NodeID Msg json解码失败,err:%v", err)
+			return
 		}
-		// 为每一个 conn socket准备一个单独的协程
-		go func(conn net.Conn) {
-			// 1.连接成功后，首先需要向对方发送自己的NodeID
-			if selfNodeIDBytes, err := rlp.EncodeToBytes(peer.nodeID); err != nil {
-				loglogrus.Log.Errorf("[P2P] 当前节点(%s:%d)无法编码自己的NodeID,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port, err)
-				conn.Close()
-				return
-			} else {
-				if _, err := conn.Write(selfNodeIDBytes); err != nil {
-					loglogrus.Log.Errorf("[P2P] 当前节点(%s:%d)无法发送自己的NodeID,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port, err)
-					conn.Close()
-					return
-				}
-			}
+		loglogrus.Log.Infof("当前节点(%s)获取的 NodeInfo Msg: NodeID:(%x) NodeUrl:(%s)\n", peer.LocalUrl, msg.NodeID, msg.Url)
 
-			// 2.接着获取对方的NodeID
-			rbuff := make([]byte, nodeIDBuff)
-			n, err := conn.Read(rbuff)
-			if err != nil {
-				loglogrus.Log.Warnf("[P2P] 当前节点(%s:%d)接收对端(%s)NodeID数据失败,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port,
-					conn.RemoteAddr().String(), err)
-				conn.Close()
-				return
-			}
-			otherNodeID := new(common.NodeID)
-			if err := rlp.DecodeBytes(rbuff[:n], otherNodeID); err != nil {
-				loglogrus.Log.Errorf("[P2P] 当前节点(%s:%d)无法解码对端(%s)发送的的NodeID,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port,
-					conn.RemoteAddr().String(), err)
-				conn.Close()
-				return
-			}
+		peer.OthersUrlMutex.Lock()
+		peer.OthersUrl[msg.Url] = msg.NodeID
+		peer.OthersUrlMutex.Unlock()
+	}
+}
 
-			for {
-				// 1.等待从conn socket中读取消息
-				rbuff := make([]byte, msgBuff)
-				n, err := conn.Read(rbuff)
-				if err != nil {
-					loglogrus.Log.Warnf("[P2P] 当前节点(%s:%d)接收对端(%s)TCP数据失败,err:%v\n", peer.LocalAddr.IP, peer.LocalAddr.Port,
-						conn.RemoteAddr().String(), err)
-					continue
-				}
-				// 2.对消息进行解析
-				wrapMsg := message.DecodeWrapMessageFromBytes(rbuff[:n])
-				msg := message.DecodeWrapMessage(wrapMsg)
+func GetNewTx(peer *Peer) func(*gin.Context) {
+	return func(c *gin.Context) {
+		var wrapMsg message.WrapMessage
+		err := json.NewDecoder(c.Request.Body).Decode(&wrapMsg)
+		if err != nil {
+			loglogrus.Log.Errorf("NodeID Msg json解码失败,err:%v", err)
+			return
+		}
+		loglogrus.Log.Infof("当前节点(%s)从节点(%s)处获取的 WrapMessage Msg:  MsgType(%d) \n", peer.LocalUrl, c.Request.RemoteAddr, wrapMsg.MsgType)
 
-				// 3.验证消息是否合法(验证数字签名)
-				if pass := msg.ValidateSignature(msg.BackHash(), *otherNodeID, msg.BackSignature()); pass {
-					loglogrus.Log.Infof("[P2P] 当前节点(%s:%d)对对端(%s)消息的数字签名验证通过,此为合法消息\n", peer.LocalAddr.IP, peer.LocalAddr.Port,
-						conn.RemoteAddr().String())
-					// 4.将通过验证的消息存放到对应的缓冲区中
-					peer.MsgMutex.Lock()
-					peer.MessagePool[msg.BackHash()] = msg
-					peer.MsgMutex.Unlock()
-				} else {
-					loglogrus.Log.Warnf("[P2P] 当前节点(%s:%d)对对端(%s)消息的数字签名验证不通过,此为非法消息\n", peer.LocalAddr.IP, peer.LocalAddr.Port,
-						conn.RemoteAddr().String())
-				}
-			}
+		msg := message.DecodeWrapMessage(&wrapMsg)
 
-		}(conn)
+		// 3.验证消息是否合法(验证数字签名)
+		if pass := msg.ValidateSignature(msg.BackHash(), peer.OthersUrl[c.Request.RemoteAddr], msg.BackSignature()); pass {
+			loglogrus.Log.Infof("[P2P] 当前节点(%s)对对端(%s)消息的数字签名验证通过,此为合法消息\n", peer.LocalUrl, c.Request.RemoteAddr)
+			// 4.将通过验证的消息存放到对应的缓冲区中
+			peer.MsgMutex.Lock()
+			peer.MessagePool[msg.BackHash()] = msg
+			peer.MsgMutex.Unlock()
+		} else {
+			loglogrus.Log.Warnf("[P2P] 当前节点(%s)对对端(%s)消息的数字签名验证不通过,此为非法消息\n", peer.LocalUrl, c.Request.RemoteAddr)
+		}
 	}
 }
 

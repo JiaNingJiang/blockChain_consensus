@@ -15,21 +15,15 @@ var (
 )
 
 func p2pNet() {
-	mockAddr1 := &p2p.Address{"127.0.0.1", 8001}
-	mockAddr2 := &p2p.Address{"127.0.0.1", 8002}
-	mockAddr3 := &p2p.Address{"127.0.0.1", 8003}
+	mockAddr1 := "127.0.0.1:8001"
+	mockAddr2 := "127.0.0.1:8002"
+	mockAddr3 := "127.0.0.1:8003"
 
-	peer1 = p2p.NewPeer(mockAddr1.IP, mockAddr1.Port)
-	peer2 = p2p.NewPeer(mockAddr2.IP, mockAddr2.Port)
-	peer3 = p2p.NewPeer(mockAddr3.IP, mockAddr3.Port)
+	peer1 = p2p.NewPeer(mockAddr1, []string{mockAddr2, mockAddr3})
+	peer2 = p2p.NewPeer(mockAddr2, []string{mockAddr1, mockAddr3})
+	peer3 = p2p.NewPeer(mockAddr3, []string{mockAddr1, mockAddr2})
 
-	time.Sleep(1 * time.Second)
-
-	peer1.LookUpOthers([]*p2p.Address{mockAddr2, mockAddr3})
-	peer2.LookUpOthers([]*p2p.Address{mockAddr1, mockAddr3})
-	peer3.LookUpOthers([]*p2p.Address{mockAddr1, mockAddr2})
-
-	time.Sleep(1 * time.Second)
+	time.Sleep(2 * time.Second)
 }
 
 func TestTangle(t *testing.T) {

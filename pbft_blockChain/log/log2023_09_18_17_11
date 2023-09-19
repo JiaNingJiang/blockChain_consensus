@@ -1,0 +1,16 @@
+[2023-09-18 17:11:55] [info] node.go:135 blockChain_consensus/pbftChain/pbft/network.NewNode [Network] 节点生成成功,NodeName(ReplicaNode3),NodeID(ba353be6f7ae42cc4823480d27b86b62437646b068b097d7472ece5b9b0418bb4f71e00715dbaa0a5fc9d6f82ef373ac923f7f0bc0e386e98f79df7eff7243fc),url:127.0.0.1:9004
+
+[2023-09-18 17:11:55] [info] consensusInterface.go:71 blockChain_consensus/pbftChain/pbft/network.(*ConsensusNode).HttpInitialize ConsensusNode(ReplicaNode3) will be started at 127.0.0.1:9004...
+
+[2023-09-18 17:11:55] [info] node.go:135 blockChain_consensus/pbftChain/pbft/network.NewNode [Network] 节点生成成功,NodeName(ReplicaNode2),NodeID(7ea7800900b0dc1c680601967f1db7915d4115cf62ccf7e8d3cce963188b2d2bb069c4f6cd4f28134b1320e03e33daf6ec74e7c63e40ed9ef38a513b1840276a),url:127.0.0.1:9003
+
+[2023-09-18 17:11:55] [info] consensusInterface.go:71 blockChain_consensus/pbftChain/pbft/network.(*ConsensusNode).HttpInitialize ConsensusNode(ReplicaNode2) will be started at 127.0.0.1:9003...
+
+[2023-09-18 17:11:55] [info] node.go:135 blockChain_consensus/pbftChain/pbft/network.NewNode [Network] 节点生成成功,NodeName(ReplicaNode1),NodeID(af7463dc351c12ec89a781dfc92b885d9b902114575efc5acaca68a5845fd493ac99d8c4aee2e6e3c0608f4149f5d23db5f80f0d815f594e6e9f9c4c5da189a1),url:127.0.0.1:9002
+
+[2023-09-18 17:11:55] [info] node.go:135 blockChain_consensus/pbftChain/pbft/network.NewNode [Network] 节点生成成功,NodeName(MainNode),NodeID(2430512872ff91f49dc217b0f380d9fdf619fa26cfcb61303f70b62336b29c877f3084573aba30c27cd78b3997505721e301659003d2ac10f0cc88fd3dceab23),url:127.0.0.1:9001
+
+[2023-09-18 17:11:55] [info] consensusInterface.go:71 blockChain_consensus/pbftChain/pbft/network.(*ConsensusNode).HttpInitialize ConsensusNode(ReplicaNode1) will be started at 127.0.0.1:9002...
+
+[2023-09-18 17:11:55] [info] consensusInterface.go:71 blockChain_consensus/pbftChain/pbft/network.(*ConsensusNode).HttpInitialize ConsensusNode(MainNode) will be started at 127.0.0.1:9001...
+

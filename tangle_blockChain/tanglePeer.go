@@ -8,14 +8,11 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strconv"
-	"strings"
 	"time"
 )
 
 var (
-	peerIP     string
-	peerPort   int
+	peerUrl    string
 	peersTable string
 
 	sendRate          int // 节点发送交易的速率
@@ -25,9 +22,8 @@ var (
 )
 
 func init() {
-	flag.StringVar(&peerIP, "peerIP", "127.0.0.1", "Tangle节点的IP地址")
-	flag.IntVar(&peerPort, "peerPort", 65588, "Tangle节点的Port")
-	flag.StringVar(&peersTable, "peersTable", "127.0.0.1:8001,127.0.0.1:8002,127.0.0.1:8003", "Tangle集群中所有节点的地址")
+	flag.StringVar(&peerUrl, "peerUrl", "127.0.0.1:65588", "Tangle节点的Url监听地址")
+	flag.StringVar(&peersTable, "peersTable", "127.0.0.1:8001,127.0.0.1:8002,127.0.0.1:8003", "Tangle集群中所有节点的Url地址")
 
 	flag.IntVar(&sendRate, "sendRate", 10, "节点发送交易的速率")
 	flag.IntVar(&txConfirmDuration, "txCD", 4, "交易从发布到上链所需的确定时延")
@@ -38,23 +34,9 @@ func init() {
 func main() {
 	flag.Parse()
 
-	otherPeers := make([]*p2p.Address, 0)
+	otherPeers := make([]string, 0)
 
-	peers := strings.Split(peersTable, ",")
-	for _, peer := range peers {
-		peerInfo := strings.Split(peer, ":")
-		newPeer := &p2p.Address{}
-
-		newPeer.IP = peerInfo[0]
-		newPeer.Port, _ = strconv.Atoi(peerInfo[1])
-
-		otherPeers = append(otherPeers, newPeer)
-	}
-
-	peer := p2p.NewPeer(peerIP, peerPort) // 建立本地p2p节点
-
-	peer.LookUpOthers(otherPeers) // 等待完成与其他p2p节点的连接
-	time.Sleep(5 * time.Second)
+	peer := p2p.NewPeer(peerUrl, otherPeers) // 建立本地p2p节点
 
 	tanglePeer := tangle.NewTangle(sendRate, time.Duration(txConfirmDuration)*time.Second, powDiff, peer) // 在p2p节点之上创建tangle节点
 
@@ -78,9 +60,10 @@ func main() {
 
 			txCount := tanglePeer.BackTxCount()
 			endTime := time.Now()
-			loglogrus.Log.Infof(" 当前节点(%s:%d) -- 起始时间(%s) -- 终止时间(%s) -- 时间差(%v) -- 上链交易数为:%d\n", peerIP, peerPort,
+			loglogrus.Log.Infof(" 当前节点(%s) -- 起始时间(%s) -- 终止时间(%s) -- 时间差(%v) -- 上链交易数为:%d\n", peerUrl,
 				startTime.Format("2006-01-02 15:04:05"), endTime.Format("2006-01-02 15:04:05"), endTime.Sub(startTime).Seconds(), txCount)
 
+			time.Sleep(5 * time.Second)
 			os.Exit(0)
 		}
 	}
