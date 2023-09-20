@@ -2,10 +2,13 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"net/http"
 	"os"
+	"os/signal"
 	"strings"
 	"sync/atomic"
+	"syscall"
 	"time"
 
 	api "blockChain_consensus/raftChain/api/httpApi"
@@ -36,6 +39,10 @@ func init() {
 	flag.StringVar(&raftId, "raft_id", "1", "raft id")                                                                 // 设置当前节点的raft节点编号
 	flag.StringVar(&raftCluster, "raft_cluster", "1/127.0.0.1:7000,2/127.0.0.1:8000,3/127.0.0.1:9000", "cluster info") // 设置其余节点的 编号+raft通信端口
 	flag.StringVar(&http_raft_addr_map, "http_raft_addr_map", "127.0.0.1:7001/127.0.0.1:7000,127.0.0.1:8001/127.0.0.1:8000,127.0.0.1:9001/127.0.0.1:9000", "httpAddr map raftAddr")
+}
+
+func main() {
+	flag.Parse()
 
 	peerMaps := strings.Split(http_raft_addr_map, ",")
 	if len(peerMaps) == 0 {
@@ -49,10 +56,6 @@ func init() {
 		addrMap[raftAddr] = httpAddr
 	}
 
-}
-
-func main() {
-	flag.Parse()
 	// 初始化配置
 	if httpAddr == "" || raftAddr == "" || raftId == "" || raftCluster == "" {
 		loglogrus.Log.Errorf("[Initialization] Node Config error: httpAddr == nil or raftAddr == nil or raftId == nil or raftCluster == nil\n")
@@ -70,7 +73,27 @@ func main() {
 		return
 	}
 
+	// 创建一个通道来接收操作系统发送的信号
+	sigCh := make(chan os.Signal, 1)
+
+	// 告诉通道监听这些信号
+	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
+
+	// 启动一个goroutine来等待信号
+	go func() {
+		sig := <-sigCh
+		fmt.Printf("接收到信号 %v，正在关闭程序...\n", sig)
+
+		// 在这里执行清理操作，比如关闭数据库连接、保存数据等
+		myRaft.Shutdown()
+
+		// 然后退出程序
+		os.Exit(0)
+	}()
+
 	// 启动raft(当前节点完成与其他raft节点的连接)
+	myraft.Bootstrap(myRaft, raftId, raftAddr, raftCluster)
+
 	myraft.Bootstrap(myRaft, raftId, raftAddr, raftCluster)
 
 	// 监听leader变化（使用此方法无法保证强一致性读，仅做leader变化过程观察）
@@ -96,13 +119,18 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 
-	s.ListenAndServe()
+	go s.ListenAndServe()
 
-	// 关闭raft
+	for {
+		time.Sleep(1 * time.Second)
+	}
+
 	// shutdownFuture := myRaft.Shutdown()
 	// if err := shutdownFuture.Error(); err != nil {
 	// 	fmt.Printf("shutdown raft error:%v \n", err)
 	// }
+
+	// 关闭raft
 
 	// 退出http server
 	// fmt.Println("shutdown kv http server")

@@ -19,8 +19,8 @@ func NewMyRaft(raftAddr, raftId, raftDir string) (*raft.Raft, *fsm.Fsm, error) {
 	config.LogLevel = "DEBUG"
 	config.LocalID = raft.ServerID(raftId)
 	// config.HeartbeatTimeout = 1000 * time.Millisecond
-	// config.ElectionTimeout = 1000 * time.Millisecond
-	// config.CommitTimeout = 1000 * time.Millisecond
+	// config.ElectionTimeout = 5000 * time.Millisecond
+	// config.CommitTimeout = 5000 * time.Millisecond
 
 	addr, err := net.ResolveTCPAddr("tcp", raftAddr)
 	if err != nil {
@@ -53,10 +53,10 @@ func NewMyRaft(raftAddr, raftId, raftDir string) (*raft.Raft, *fsm.Fsm, error) {
 
 // 与其他的raft节点完成连接
 func Bootstrap(rf *raft.Raft, raftId, raftAddr, raftCluster string) {
-	servers := rf.GetConfiguration().Configuration().Servers // 检查当前节点是否已经与其他raft节点存在连接了
-	if len(servers) > 0 {
-		return
-	}
+	// servers := rf.GetConfiguration().Configuration().Servers // 检查当前节点是否已经与其他raft节点存在连接了
+	// if len(servers) > 0 {
+	// 	return
+	// }
 	peerArray := strings.Split(raftCluster, ",")
 	if len(peerArray) == 0 {
 		return

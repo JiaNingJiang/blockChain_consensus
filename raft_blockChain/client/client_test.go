@@ -9,7 +9,7 @@ import (
 func TestGetLeader(t *testing.T) {
 	raftNodes := []string{"http://127.0.0.1:7001", "http://127.0.0.1:8001", "http://127.0.0.1:9001"}
 
-	client := NewClient("client1", raftNodes)
+	client := NewClient("client2", raftNodes)
 
 	fmt.Println(client.GetLeaderHttp())
 }
@@ -20,11 +20,11 @@ func TestClientWrite(t *testing.T) {
 	client := NewClient("client1", raftNodes)
 
 	beforeTime := time.Now()
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 100; i++ {
 		// time.Sleep(2 * time.Nanosecond)
-		res := client.CommonWrite([]string{fmt.Sprintf("key%d", i), fmt.Sprintf("value%d", i)})
+		res := client.CommonWrite([]string{fmt.Sprintf("ke%d", i), fmt.Sprintf("value%d", i)})
 
-		fmt.Printf("本轮(%d)结果 : %s\n", i, res)
+		fmt.Printf("本轮de(%d)结果 : %s\n", i, res)
 	}
 	afterTime := time.Now()
 

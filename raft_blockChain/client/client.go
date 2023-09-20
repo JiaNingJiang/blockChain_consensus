@@ -68,8 +68,8 @@ func (c *Client) CommonWrite(args []string) string {
 
 	leaderHttp := c.GetLeaderHttp()
 
-	// return sendHttpPost(leaderHttp+"/newTx", buf, writer)
-	return sendHttpPost(leaderHttp+"/newTx_highTPS", buf, writer) // 对于写操作,当前接口大约要比上面的/newTx接口的TPS高一倍
+	return sendHttpPost(leaderHttp+"/newTx", buf, writer)
+	//return sendHttpPost(leaderHttp+"/newTx_highTPS", buf, writer) // 对于写操作,当前接口大约要比上面的/newTx接口的TPS高一倍
 }
 
 func (c *Client) CommonRead(args []string) string {
